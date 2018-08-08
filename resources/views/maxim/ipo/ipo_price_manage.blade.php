@@ -105,7 +105,9 @@ $totalIncrQty += ceil(($Qty * $increase) / 100 + $Qty);
 
 												<input type="hidden" name="ipo_id[]" value="{{$ipoIds[$ipoIdInc]}}" >
 												<td width="100%">
-													<input type="text" name="ipo_increase_percentage[]" value="{{ $ipoIncrease }}">
+
+													<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage" class="form-control">
+
 												</td>
 
 											</tr>
