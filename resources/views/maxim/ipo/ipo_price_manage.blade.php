@@ -105,7 +105,7 @@
 
 												<input type="hidden" name="ipo_id[]" value="{{$ipoIds[$ipoIdInc]}}" >
 												<td width="100%">
-													<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage">
+													<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage" class="form-control">
 												</td>
 
 											</tr>
