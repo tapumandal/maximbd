@@ -358,9 +358,9 @@ $('#purchase_order_list_search_form').on('submit', function (ev) {
             $('.polistResetBtnAndNo').css('display','block');
             $('.poTableList').css('display','block');
             $('.PONoInList').text(' PO no: '+results.responseJSON[0]);
+            $('.report_all_data').val(results.responseJSON[0]);
         }
         else {
-            alert('no');
             $('.polistResetBtnAndNo').css('display','none');
             $('.poTableList').css('display','none');
             EmptyValueView('.pagination', '#po_list_tbody', "", 12);
@@ -388,6 +388,21 @@ function addRowInPOList(results/*, start*/)
     var finalTotalQnty = 0;
     var finalTotalAmnt = 0;
 
+    // var position = start+1;
+    // start = start*15;
+    //
+    // if(results.length <start+15)
+    //     end = results.length;
+    // else
+    //     end = start+15;
+    //
+    // var rows = $.map(results, function(value, index) {
+    //     return [value];
+    // });
+
+    if(rows.length == 0)
+        EmptyValueView('.pagination', '#po_list_tbody', "", 12);
+
     for (var i = 0; i < rows.length; i++)
     {
         if(rows[i].item_size != null)
@@ -406,43 +421,55 @@ function addRowInPOList(results/*, start*/)
             var quantities = [];
 
         if(rows[i].supplier_price != null)
-            var unit_price = rows[i].supplier_price;
+            var unit_prices = rows[i].supplier_price.split(',');
         else
-            var unit_price = rows[i].unit_price;
+            var unit_prices = rows[i].item_price.split(',');
+
+        if(rows[i].erp_code != null)
+            var erp_codes = rows[i].erp_code.split(',');
+        else
+            var erp_codes = [];
+
+        if(rows[i].item_code != null)
+            var item_codes = rows[i].item_code.split(',');
+        else
+            var item_codes = [];
 
         var spanLength = quantities.length;
 
         $('#po_list_tbody').append('<tr class="po_list_table"><td>'+sl+
             '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="booking_order_id_'+i+'_0"><b>'+rows[i].booking_order_id+
             '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="shipmentDate_'+i+'_0"><b>'+rows[i].shipmentDate+
-            '</td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="erp_code_'+i+'_0">'+rows[i].erp_code+
-            '</td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="item_code_'+i+'_0">'+rows[i].item_code+
+            '</td><td class="erp_code_'+i+'_0">'+erp_codes[0]+
+            '</td><td class="item_code_'+i+'_0">'+item_codes[0]+
             '</td><td class="sizes_'+i+'_0">'+sizes[0]+
             '</td><td class="matarial_'+i+'_0">'+rows[i].matarial+
             '</td><td class="gmts_color_'+i+'_0">'+colors[0]+
             '</td><td class="unit_'+i+'_0">'+''+
             '</td><td class="quantities_'+i+'_0">'+quantities[0]+
-            '</td><td class="unitPrice_'+i+'_0">'+unit_price+
-            '</td><td class="totalPrice_'+i+'_0">'+(quantities[0]*unit_price).toFixed(2)+
+            '</td><td class="unitPrice_'+i+'_0">'+unit_prices[0]+
+            '</td><td class="totalPrice_'+i+'_0">'+(quantities[0]*unit_prices[0]).toFixed(2)+
             '</td></tr>');
         sl++;
 
         var totalQnty = parseFloat(quantities[0]);
-        var totalAmount = parseFloat(quantities[0]*unit_price);
+        var totalAmount = parseFloat(quantities[0]*unit_prices[0]);
 
         for (var j = 1; j < spanLength; j++)
         {
             totalQnty += parseFloat(quantities[j]);
-            totalAmount += parseFloat(quantities[j]*unit_price);
+            totalAmount += parseFloat(quantities[j]*unit_prices[j]);
 
             $('#po_list_tbody').append('<tr class="po_list_table"><td>'+sl+
+                '</td><td class="erp_code_'+i+'_'+j+'">'+erp_codes[j]+
+                '</td><td class="item_code_'+i+'_'+j+'">'+item_codes[j]+
                 '</td><td class="sizes_'+i+'_'+j+'">'+sizes[j]+
                 '</td><td class="matarial_'+i+'_'+j+'">'+rows[i].matarial+
                 '</td><td class="gmts_color_'+i+'_'+j+'">'+colors[j]+
                 '</td><td class="unit_'+i+'_'+j+'">'+''+
                 '</td><td class="quantities_'+i+'_'+j+'">'+quantities[j]+
-                '</td><td class="unitPrice_'+i+'_'+j+'">'+unit_price+
-                '</td><td class="totalPrice_'+i+'_'+j+'">'+(quantities[j]*unit_price).toFixed(2)+
+                '</td><td class="unitPrice_'+i+'_'+j+'">'+unit_prices[j]+
+                '</td><td class="totalPrice_'+i+'_'+j+'">'+(quantities[j]*unit_prices[j]).toFixed(2)+
                 '</td></tr>');
             sl++;
         }
@@ -455,6 +482,10 @@ function addRowInPOList(results/*, start*/)
         finalTotalAmnt += totalAmount;
     }
 
+    $('#save_purcahe_order_form').on('submit', function (ev) {
+        alert('submit');
+    });
+
     $('#po_list_tbody').append('<tr class="po_list_table"><td colspan="9" style="vertical-align: middle;"><b> Final Total</b></td><td class="totalQnty_'+i+'_l"><b>'+finalTotalQnty.toFixed(2)+
         '</b></td><td class="totalUnitPirce_'+i+'_l"><b>'+''+
         '</b></td><td class="totalAmount_'+i+'_l"><b>'+finalTotalAmnt.toFixed(2)+
@@ -462,6 +493,8 @@ function addRowInPOList(results/*, start*/)
 }
 
 $('.save_purcahe_order').on('click', function (ev) {
+    var poId = $('.report_all_data').val();
+    // alert($('.report_all_data').val());
     var it1 = 0;
     var po_no = $('.PONoInList').html().replace('PO no: ','');
     var datas = [['po_no','booking_order_no', 'shipment_date', 'erp_code', 'item_code', 'size', 'material', 'color', 'unit', 'qnty', 'unit_price', 'total_amnt']];
@@ -472,8 +505,6 @@ $('.save_purcahe_order').on('click', function (ev) {
             var it2 = 0;
             var booking_order_id = $('.booking_order_id_'+it1+'_0').html().replace('<b>','').replace('</b>','');
             var shipmentDate = $('.shipmentDate_'+it1+'_0').html().replace('<b>','').replace('</b>','');
-            var erp_code = $('.erp_code_'+it1+'_0').html();
-            var item_code = $('.item_code_'+it1+'_0').html();
 
             while (true)
             {
@@ -482,8 +513,8 @@ $('.save_purcahe_order').on('click', function (ev) {
                     datas.push([po_no,
                         booking_order_id,
                         shipmentDate,
-                        erp_code,
-                        item_code,
+                        $('.erp_code_'+it1+'_'+it2).html(),
+                        $('.item_code_'+it1+'_'+it2).html(),
                         $('.sizes_'+it1+'_'+it2).html(),
                         $('.matarial_'+it1+'_'+it2).html(),
                         $('.gmts_color_'+it1+'_'+it2).html(),
@@ -502,11 +533,14 @@ $('.save_purcahe_order').on('click', function (ev) {
             break;
     }
     var poDatajs = JSON.stringify(datas);
-    // var saveData = ajaxFunc("/save_purcahse_order/", "GET", "data="+poDatajs);
+    // $('.report_all_data').val(poDatajs);
+    var saveData = ajaxFunc("/save_purcahse_order/", "GET", "data="+poDatajs);
+
+    // console.log(saveData.responseText);
 
     // alert(saveData.responseText);
     var getUrl = document.URL;
-    var setUrl = getUrl.replace("/list","/report?data="+poDatajs);
-    // console.log(results);
+    var setUrl = getUrl.replace("/list","/report?data="+saveData.responseText);
+    // // console.log(datas);
     window.location.assign(setUrl);
 });

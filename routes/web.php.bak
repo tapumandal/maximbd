@@ -66,6 +66,16 @@ Route::group(
         'uses'=>'taskController\MrfListController@getMrfListBySearch'
     ));
 
+    Route::post('/po_list_by_search/', array(
+        'as'=>'po_list_by_search',
+        'uses'=>'Production\PurchaseOrderController@getPOListBySearch'
+    ));
+
+//    Route::get('/save_purcahse_order/', array(
+//        'as'=>'save_purcahse_order',
+//        'uses'=>'Production\PurchaseOrderController@savePurchaseOrder'
+//    ));
+
     // Route::get('/create_urgent_client', array(
     // 	'as' => 'add_urgent_client',
     // 	'uses' => 'ClientController@addUrgentClient',
@@ -804,6 +814,11 @@ Route::group(['middleware' => 'auth'], function () {
             'as'=>'get_product_details',
             'uses'=>'taskController\BookingController@orderInputDetails'
         ]);
+    Route::any('submited/get/product/details/vedorPrice',
+        [
+            'as'=>'get_product_details',
+            'uses'=>'taskController\BookingController@getVendorPrice'
+        ]);
     Route::any('/get/product/details',
         [
             'as'=>'get_product_details',
@@ -937,3 +952,44 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 });
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::group(['middleware' => 'routeAccess'], function () {
+
+        Route::get('booking/list/createIpo/{booking_id?}',
+            [
+                'as'=>'booking_list_create_ipo',
+                'uses'=>'taskController\BookingListController@createIpoView'
+            ]);
+
+        Route::get('booking/list/createMrf/{booking_id?}',
+            [
+                'as'=>'booking_list_create_mrf',
+                'uses'=>'taskController\BookingListController@createMrfView'
+            ]);
+
+        Route::get('purchase/order/list',
+            [
+                'as'=>'generate_purchase_order',
+                'uses'=>'Production\PurchaseOrderController@index'
+            ]);
+
+        Route::get('purchase/order/list',
+            [
+                'as'=>'generate_purchase_order',
+                'uses'=>'Production\PurchaseOrderController@index'
+            ]);
+
+        Route::get('purchase/order/report/{data?}',
+            [
+                'as'=>'generate_purchase_order_report',
+                'uses'=>'Production\PurchaseOrderController@getReport'
+            ]);
+    });
+});
+
+//INSERT INTO `maxpronewerp`.`mxp_menu` (`name`, `route_name`, `description`, `parent_id`, `is_active`, `order_id`) VALUES ('Purchase Order', 'generate_purchase_order', 'purchase order list', '97', '1', '3');
+//INSERT INTO `maxpronewerp`.`mxp_user_role_menu` (`role_id`, `menu_id`, `company_id`, `is_active`) VALUES ('1', '108', '0', '1');
+
+

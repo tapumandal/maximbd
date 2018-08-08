@@ -79,17 +79,7 @@
             </table>
 
             <div class="col-sm-2 col-sm-offset-10">
-                <from type="post" action="{{ Route('generate_purchase_order_report') }}" id="save_purcahe_order_form">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="report_all_data" class="report_all_data">
-                    <input type="submit" id="save_purcahe_order" class="btn btn-success save_purcahe_order" value="Get Report">
-                </from>
-                {{--<button class="btn btn-success save_purcahe_order">Get Report</button>--}}
-            </div>
-            <div class="pagination-container">
-                <nav>
-                    <ul class="pagination"></ul>
-                </nav>
+                <button class="btn btn-success save_purcahe_order">Get Report</button>
             </div>
             {{--<div class="pagination-container">--}}
                 {{--<nav>--}}
