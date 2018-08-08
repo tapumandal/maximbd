@@ -41,9 +41,15 @@
         </div>
     </div>
     <br>
-    <div  style="background-color: #2b542c; color: #ffffff;" class="col-sm-3 col-sm-offset-9" align="center">
-        <h4 class="PONoInList"> PO no: {{ $purchaseOrders[0]->po_no }}</h4>
-    </div>
+        <div class="col-sm-4">
+            <p><b>Company Name: </b>{{ $supplier->name }}</p>
+            <p><b>Company Address: </b>{{ $supplier->address }}</p>
+            <p><b>Mobile No: </b>{{ $supplier->phone }}</p>
+        </div>
+        <div  style="background-color: #2b542c; color: #ffffff;" class="col-sm-3 col-sm-offset-5" align="center">
+            <h4 class="PONoInList"> PO no: {{ $purchaseOrders[0]->po_no }}</h4>
+        </div>
+
         <br>
         <br>
     <div class="row body-top">
