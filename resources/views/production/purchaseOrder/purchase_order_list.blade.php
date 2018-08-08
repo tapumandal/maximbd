@@ -29,11 +29,11 @@
                 {{--<div class="col-sm-5">--}}
                     <div class="col-sm-3">
                         <label class="col-sm-12 label-control">Delivery Date from</label>
-                        <input type="date" name="from_oder_date_search" class="form-control" id="from_oder_date_search">
+                        <input type="text" name="from_oder_date_search" class="form-control" id="from_oder_date_search">
                     </div>
                     <div class="col-sm-3">
                         <label class="col-sm-12 label-control">Delivery Date to</label>
-                        <input type="date" name="to_oder_date_search" class="form-control" id="to_oder_date_search">
+                        <input type="text" name="to_oder_date_search" class="form-control" id="to_oder_date_search">
                     </div>
                 {{--</div>--}}
                 <br>
@@ -100,5 +100,11 @@
     </div>
     <script type="text/javascript">
         $(".selections").select2();
+    </script>
+@endsection
+@section("LoadScript")
+    <script type="text/javascript">
+        $("#from_oder_date_search").datetimepicker();
+        $("#to_oder_date_search").datetimepicker();
     </script>
 @endsection
