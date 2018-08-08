@@ -347,6 +347,7 @@ $('#purchase_order_list_search_form').on('submit', function (ev) {
 
     ev.preventDefault();
     var  data = $('#purchase_order_list_search_form').serialize();
+    console.log(data);
     var supplier_id = $('#supplier_id').val();
     if (supplier_id != '')
     {
@@ -354,6 +355,7 @@ $('#purchase_order_list_search_form').on('submit', function (ev) {
 
         if((results.responseJSON != '') && (results.responseJSON != null))
         {
+            // console.log(results.responseJSON);
             addRowInPOList(results.responseJSON[1]/*, 0*/);
             $('.polistResetBtnAndNo').css('display','block');
             $('.poTableList').css('display','block');
@@ -540,7 +542,16 @@ $('.save_purcahe_order').on('click', function (ev) {
 
     // alert(saveData.responseText);
     var getUrl = document.URL;
-    var setUrl = getUrl.replace("/list","/report?data="+saveData.responseText);
+    var Supplier_id = $('#supplier_id').val();
+    var data = po_no+','+Supplier_id;
+    var setUrl = getUrl.replace("/list","/report?data="+data);
     // // console.log(datas);
     window.location.assign(setUrl);
 });
+
+// $('#to_oder_date_search').on('click',function (ev) {
+//     // alert('clicked');
+//     // $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+// });
+
+// $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
