@@ -102,7 +102,7 @@ $buyerName = [];
                                 </div>
                             </div>
 
-                            <div class="form-group piFormatH">
+                            <!-- <div class="form-group piFormatH">
                                 <label class="col-md-4 control-label">
                                     <span class="pull-right">PI Format</span>
                                 </label>
@@ -114,6 +114,15 @@ $buyerName = [];
                                         <option value="1003">DARE2B</option>
                                         <option>PI Format 4</option>
                                     </select>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group conversion_rate hidden">
+                                <label class="col-md-4 control-label">
+                                    <span class="pull-right">Conversion Rate</span>
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" name="conversion_rate" class="form-control">
                                 </div>
                             </div>
 
