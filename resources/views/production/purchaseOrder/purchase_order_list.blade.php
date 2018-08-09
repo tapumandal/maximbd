@@ -28,11 +28,11 @@
                 {{--</div>--}}
                 {{--<div class="col-sm-5">--}}
                     <div class="col-sm-3">
-                        <label class="col-sm-12 label-control">Delivery Date from</label>
+                        <label class="col-sm-12 label-control">PO Date from</label>
                         <input type="text" name="from_oder_date_search" class="form-control" id="from_oder_date_search">
                     </div>
                     <div class="col-sm-3">
-                        <label class="col-sm-12 label-control">Delivery Date to</label>
+                        <label class="col-sm-12 label-control">PO Date to</label>
                         <input type="text" name="to_oder_date_search" class="form-control" id="to_oder_date_search">
                     </div>
                 {{--</div>--}}
@@ -67,8 +67,8 @@
                     <th>Color</th>
                     <th>Unit</th>
                     <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total Amount</th>
+                    <th>Unit Price($)</th>
+                    <th>Total Amount($)</th>
                     </thead>
                 </tr>
                 @php($j=1)
