@@ -10,6 +10,10 @@ Route::group(['middleware' => 'auth'], function(){
        Route::get('supplier/update/{supplier_id?}', 'Supplier\SupplierController@supplierUpdate')->name('supplier_update');
        Route::post('supplier/update/{supplier_id?}', 'Supplier\SupplierController@supplierUpdateAction')->name('supplier_update_action');
        Route::get('supplier/delete/{supplier_id?}', 'Supplier\SupplierController@supplierDeleteAction')->name('supplier_delete_action');
+
+       Route::get('booking/files/{booking_buyer_id?}/download', 'taskController\BookingListController@bookingFilesDownload')->name('booking_files_download');
+
+
    });
 });
 

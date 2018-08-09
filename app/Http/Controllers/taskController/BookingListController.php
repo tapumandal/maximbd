@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\taskController;
+    namespace App\Http\Controllers\taskController;
 
-use App\Http\Controllers\dataget\ListGetController;
+use  App\Http\Controllers\dataget\ListGetController;
 use App\Http\Controllers\Message\StatusMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RoleManagement;
+use App\Model\BookingFile;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Supplier;
@@ -13,6 +14,11 @@ use App\MxpIpo;
 use Validator;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\Response;
+use ZipArchive;
+use App\Model\MxpBookingBuyerDetails;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class BookingListController extends Controller
 {   
@@ -28,6 +34,44 @@ class BookingListController extends Controller
             ->paginate(15);
 
         return view('maxim.booking_list.booking_list_page',compact('bookingList'));
+    }
+
+    public function bookingFilesDownload(Request $request){
+
+        $fileinfo = BookingFile::get()->where('booking_buyer_id', $request->booking_buyer_id);
+
+
+        $files = [];
+        $oriFiles = [];
+
+        foreach ($fileinfo as $info){
+            array_push($files, 'booking_files/'.$info->file_name_server.'.'.$info->file_ext);
+            array_push($oriFiles, 'booking_files/'.$info->file_name_original.'.'.$info->file_ext);
+        }
+
+        $bbInfo = MxpBookingBuyerDetails::where('id', $request->booking_buyer_id)->first();
+
+        $zipname = $bbInfo->booking_order_id.'.zip';
+        $zip = new ZipArchive;
+        $zip->open($zipname, ZipArchive::CREATE);
+
+        $i=0;
+        foreach ($files as $file) {
+            $zip->addFile($file);
+            $zip->renameName($file, $oriFiles[$i]);
+            $i++;
+        }
+        $zip->close();
+
+        header('Content-Type: application/zip');
+        header('Content-disposition: attachment; filename='.$zipname);
+        header('Content-Length: ' . filesize($zipname));
+
+        readfile($zipname);
+
+        File::delete($zipname);
+
+        return redirect()->back();
     }
 
     public function showBookingReport(Request $request){

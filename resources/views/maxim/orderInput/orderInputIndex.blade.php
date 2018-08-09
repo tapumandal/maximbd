@@ -7,9 +7,30 @@
 @section('section')
   <style type="text/css">
     .top-div{
-      background-color: #f9f9f9; 
-      padding:5px 0px 5px 10px; 
+      background-color: #f9f9f9;
+      padding:5px 0px 5px 10px;
       border-radius: 7px;
+    }
+
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
     }
   </style>
 
@@ -28,10 +49,23 @@
         @include('widgets.alert', array('class'=>'danger', 'message'=> Session::get('error_code') ))
     @endif
 
-      <form class="" action="{{ Route('booking_order_action') }}" role="form" method="POST" >
+      <form class="" action="{{ Route('booking_order_action') }}" role="form" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
-              
+
               <input type="hidden" name="buyerDetails" value="{{$buyerDetails}}">
+
+            <div class="col-md-12" style="margin-top: 10px;">
+              <div class="pull-left">
+                <div class="form-group button_add pull-right">
+                  {{--<input type="file" name="booking_files[]" class="btn btn-success" id="" ><i class="fa fa-file" style="font-size:`16px;color:white; margin-right:7px;"></i>Add Files</input>--}}
+
+                  <label class="btn btn-default btn btn-success">
+                    <i class="fa fa-file" style="font-size:`16px;color:white; margin-right:7px;"></i>
+                    Select Files <input type="file" style="display: none;" name="booking_files[]" class="" id="" multiple>
+                  </label>
+                </div>
+              </div>
+            </div>
 
               <div class="top-div">
                 <?php
@@ -46,6 +80,10 @@
                             $companyId = $buyer->id;
                   ?>
                 @endforeach
+
+
+
+
                 <div class="row">
                 <div class="col-md-6 col-xs-6">
                   <div class="form-group">
@@ -54,7 +92,7 @@
                     <div class="">
                       <input type="text" name="buyerName" class="form-control" readonly="true" value="{{$buyerName}}" title="Buyer Name">
                     </div>
-                  </div>                  
+                  </div>
                 </div>
 
                 <div class="col-md-6 col-xs-6">
@@ -105,7 +143,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>          
+          </table>
               </div>
 
 
@@ -113,7 +151,7 @@
 
         <table class="table-striped" id="filed_increment">
           <thead>
-            <tr>              
+            <tr>
               <th width="15%">Item Code</th>
               <th>ERP Code</th>
               <th>GMTS Color</th>
@@ -132,7 +170,7 @@
               <td width="15%">
                 <div class="form-group item_codemxp_parent">
                   <input class="booking_item_code item_code easyitemautocomplete" type="text" name="item_code[]"  id="item_codemxp" data-parent="tr_clone">
-                  
+
                 </div>
               </td>
               <td width="20%">
@@ -141,7 +179,7 @@
                   </select>
                 </div>
               </td>
-              
+
               <td width="20%">
                 <div class="form-group">
                   <select name="item_gmts_color[]" class="form-control itemGmtsColor" id="itemGmtsColor" readonly="true"></select>
@@ -149,7 +187,7 @@
               </td>
               <td width="20%">
                 <div class="form-group">
-                  <!-- <input type="text" name="item_size[]" class="form-control"> -->
+                  {{--<input type="text" name="item_size[]" class="form-control">--}}
 
                   <select name="item_size[]" class="form-control itemSize" id="itemSize" disabled = "true" >
                   </select>
@@ -173,7 +211,7 @@
               </td>
               <td></td>
             </tr>
-          </tbody>    
+          </tbody>
         </table>
         <!-- <div class="row">
           <div class="col-md-6 col-xs-6"></div>
@@ -189,7 +227,7 @@
             <!-- </div>
           </div>
         </div> -->
-        
+
       </form>
 
   </div>

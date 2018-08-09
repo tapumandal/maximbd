@@ -136,6 +136,9 @@
 									    <li>
 									    	<a href="{{ Route('booking_list_create_mrf', $value->booking_order_id) }}">MRF</a>
 									    </li>
+                      <li>
+                        <a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
+                      </li>
 									</ul>
 							  	</form>
 							</div>

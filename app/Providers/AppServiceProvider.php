@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use Validator;
 use DB;
+use Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
   */
   public function boot()
   {
+
     error_reporting(0);
     
   Validator::extend('unique_check_more_field_comb', function($attribute, $value,$parameters)
