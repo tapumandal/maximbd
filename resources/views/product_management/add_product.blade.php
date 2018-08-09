@@ -172,7 +172,7 @@ trans('others.add_product_label'))
 													</i>
 												</a>
 												<small style="float: left; padding-top: 4px;">
-													Vendor Price
+													Supplier Price
 												</small>
 											</div>
 		                                </div>
