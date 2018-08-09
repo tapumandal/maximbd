@@ -17,8 +17,11 @@ $(document).ready(function(){
 
 			$('.buyer_company').addClass('hidden');
 			$('.ipo_increase').addClass('hidden');
+			$('.piFormatH').addClass('hidden');
+			$('.orderId').addClass('hidden');
 			$('.buyerChange').removeClass('hidden');
             $('#bookingIdList').addClass('hidden');
+            $('.conversion_rate').addClass('hidden');
 		}else if(selectedValue === 'PI'){
 
 			$('#buyerChange').attr("disabled","true");
@@ -32,11 +35,32 @@ $(document).ready(function(){
 			$('#piFormat').removeAttr("disabled","false");
 			$('#bookingId').removeAttr("disabled","false");
 
+			$('.buyerChange').addClass('hidden');
 			$('.buyer_company').addClass('hidden');
 			$('.ipo_increase').addClass('hidden');
 			$('.piFormatH').removeClass('hidden');
+			$('.orderId').removeClass('hidden');
             $('#bookingIdList').addClass('hidden');
+            $('.conversion_rate').addClass('hidden');
 
+		}else if(selectedValue === 'bill'){
+			$('#buyerChange').attr("disabled","true");
+			$('#hiddenBookingIdList').prop("disabled","true");
+            $('#bookingIdList').attr("disabled","true");
+			$('#buyerChange').val('');
+			$('#companyName').attr("disabled","true");
+			$('#companyName').val('');
+			$('#ipoIncrease').attr("disabled","true");
+			$('#ipoIncrease').val('');
+			$('#piFormat').removeAttr("disabled","false");
+			$('#bookingId').removeAttr("disabled","false");
+
+			$('.buyerChange').addClass('hidden');
+			$('.buyer_company').addClass('hidden');
+			$('.ipo_increase').addClass('hidden');
+			$('.conversion_rate').removeClass('hidden');
+			$('.orderId').removeClass('hidden');
+            $('#bookingIdList').addClass('hidden');
 		}else if(selectedValue === 'IPO'){
 
 			$('#companyName').attr("disabled","true");
@@ -50,7 +74,9 @@ $(document).ready(function(){
 			$('.buyerChange').addClass('hidden');
 			$('.piFormatH').addClass('hidden');
 			$('.ipo_increase').removeClass('hidden');
+			$('.orderId').removeClass('hidden');
             $('#bookingIdList').addClass('hidden');
+			$('.conversion_rate').addClass('hidden');
 
 		}else if(selectedValue === 'MRF'){
 
@@ -65,6 +91,8 @@ $(document).ready(function(){
 			$('.buyerChange').addClass('hidden');
 			$('.piFormatH').addClass('hidden');
             $('#bookingIdList').addClass('hidden');
+            $('.orderId').removeClass('hidden');
+			$('.conversion_rate').addClass('hidden');
 
 		}else if(selectedValue === 'challan'){
 
@@ -78,6 +106,8 @@ $(document).ready(function(){
 			$('.ipo_increase').addClass('hidden');
 			$('.buyerChange').addClass('hidden');
             $('#bookingIdList').removeClass('hidden');
+            $('.orderId').removeClass('hidden');
+			$('.conversion_rate').addClass('hidden');
 
 		}else{
 
@@ -91,6 +121,7 @@ $(document).ready(function(){
 
 			$('.buyer_company').addClass('hidden');
             $('#bookingIdList').addClass('hidden');
+			$('.conversion_rate').addClass('hidden');
 		}
 		
 	});
