@@ -6,6 +6,7 @@ use App\Http\Controllers\dataget\ListGetController;
 use App\Http\Controllers\Message\StatusMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RoleManagement;
+use App\Model\BookingFile;
 use Illuminate\Http\Request;
 use App\Model\MxpBookingBuyerDetails;
 use App\Model\MxpBookingChallan;
@@ -50,6 +51,8 @@ class BookingController extends Controller
       print json_encode($results);
     }
     public function addBooking(Request $request){
+
+
       $roleManage = new RoleManagement();
 
       $validMessages = [
@@ -105,7 +108,11 @@ class BookingController extends Controller
         $InserBuyerDetails->is_complete           = 0;
         $InserBuyerDetails->save();
 
+        $buyerId = $InserBuyerDetails->id;
+
       }
+
+       $this->uploadBookingFiles($request, $buyerId);
 
         $data = $request->all();
         $item_code = $data['item_code'];
@@ -187,5 +194,37 @@ class BookingController extends Controller
       $gmtsOrSizeGroup = DB::select("SELECT gmts_color,GROUP_CONCAT(item_size) as itemSize,GROUP_CONCAT(item_quantity) as quantity from mxp_booking WHERE booking_order_id = '".$customid."' GROUP BY gmts_color");
 
       return view('maxim.orderInput.reportFile',compact('bookingReport','companyInfo','gmtsOrSizeGroup'));
+    }
+
+
+
+    public function uploadBookingFiles(Request $request, $buyerId)
+    {
+
+        $i = 9999;
+        foreach ($_FILES["booking_files"]["tmp_name"] as $key => $tmp_name){
+            $file_name_server =  date("dYimsH").$i.$buyerId.rand(100,999);
+            $file_name= $_FILES["booking_files"]["name"][$key];
+            $file_tmp =$_FILES["booking_files"]["tmp_name"][$key];
+            $ext = pathinfo($file_name,PATHINFO_EXTENSION);
+            $file_name_original = str_replace('.'.$ext, '', $file_name);
+
+            if(move_uploaded_file($file_tmp=$_FILES["booking_files"]["tmp_name"][$key],"booking_files/".$file_name_server.'.'.$ext)){
+
+                $saveData = new BookingFile();
+                $saveData->booking_buyer_id = $buyerId;
+                $saveData->file_name_original = $file_name_original;
+                $saveData->file_name_server = $file_name_server;
+                $saveData->file_ext = $ext;
+                $saveData->save();
+
+            }else{
+
+                return 'false';
+            }
+
+            $i++;
+        }
+        return ture;
     }
 }

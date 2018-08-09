@@ -104,6 +104,8 @@
 								<input type="hidden" name="bid" value="{{$value->booking_order_id}}">
 								<button class="btn btn-success">View</button>
 							</form>
+
+							<a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
 						</td>
 					</tr>
 				@endforeach
