@@ -1,17 +1,9 @@
 
 $(document).ready(function(){
-  var parentLii = '';
-    // $('#page-wrapper').on('keyup', '.idclone .tr_clone .item_code', function(){
-
-    //   var parentLi = $('.idclone').find(this).parent().parent().parent().prop('className');
-    //     console.log('parentLi');
-    //     console.log(parentLi);
-    //     // $('#page-wrapper').on('keyup','.idclone .'+parentLi+' .item_code', function(){
-    //     //   parentLii = $('.idclone').find(this).parent().parent().parent().prop('className');
-        
-    //     // });
-
-    // });
+    var parentLii = '';
+    $('.item_qty').on('keyup',function(){
+        parentLii = $('.idclone').find(this).parent().parent().parent().prop('className');
+    });
 
     if(parentLii == ''){
       parentLii = 'tr_clone';
@@ -37,7 +29,7 @@ $(document).ready(function(){
               },
               onChooseEvent: function(t){
                 // console.log($("#page-wrapper .booking_item_code").val());
-                console.log(t.val());
+                // console.log(t.val());
 
               }
           },
@@ -53,10 +45,13 @@ $(document).ready(function(){
           requestDelay: 400
         };
           
+
         var clone = '';
         if(parentLii == 'tr_clone'){
             clone = $('.idclone .'+parentLii+':last').clone(true).append('<div class="btn"><i class="fa fa-minus-circle" style="font-size:20px"></i></div>');                
+
           }else{
+
             clone = $('.idclone .'+parentLii+':last').clone(true);             
           }      
 
@@ -262,7 +257,7 @@ $(document).ready(function(){
             }
           },
           error:function(result){
-            alert("Error");
+            alert("Something is wrong.");
           }
 
       });
@@ -303,7 +298,7 @@ $(document).ready(function(){
             enabled: true
         },
         onChooseEvent: function(t){
-          console.log(t.val());
+          // console.log(t.val());
         }
     },
 

@@ -67,77 +67,57 @@
 
             <?php
                 $j=1;
-                $finalQnty = 0;
-                $finalAmnt = 0;
+                $sizes = explode(',', $purchaseOrders[0]->item_sizes);
+                $materials = explode(',', $purchaseOrders[0]->materials);
+                $gmts_colors = explode(',', $purchaseOrders[0]->gmts_colors);
+                $units = explode(',', $purchaseOrders[0]->units);
+                $item_quantitys = explode(',', $purchaseOrders[0]->item_quantitys);
+                $unit_prices = explode(',', $purchaseOrders[0]->unit_prices);
+                $total_amounts = explode(',', $purchaseOrders[0]->total_amounts);
+                $spanLength = count($item_quantitys);
+
+                $totalQnty = $item_quantitys[0];
+                $totalAmnt = $total_amounts[0];
             ?>
             {{--<form method="POST" class="purchase_order_form">--}}
             <tbody>
-                @foreach($purchaseOrders as $purchaseOrder)
-                    <?php
-                        $erp_codes = explode(',', $purchaseOrder->erp_code);
-                        $item_codes = explode(',', $purchaseOrder->item_code);
-                        $sizes = explode(',', $purchaseOrder->item_sizes);
-                        $materials = explode(',', $purchaseOrder->materials);
-                        $gmts_colors = explode(',', $purchaseOrder->gmts_colors);
-                        $units = explode(',', $purchaseOrder->units);
-                        $item_quantitys = explode(',', $purchaseOrder->item_quantitys);
-                        $unit_prices = explode(',', $purchaseOrder->unit_prices);
-                        $total_amounts = explode(',', $purchaseOrder->total_amounts);
-                        $spanLength = count($item_quantitys);
+                <tr>
+                    <td>{{ $j++ }}</td>
+                    <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/"><b>{{ $purchaseOrders[0]->booking_order_id }}</b></td>
+                    <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/"><b>{{ $purchaseOrders[0]->shipment_date }}</b></td>
+                    <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/">{{ $purchaseOrders[0]->erp_code }}</td>
+                    <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/">{{ $purchaseOrders[0]->item_code }}</td>
+                    <td>{{ $sizes[0] }}</td>
+                    <td>{{ $materials[0] }}</td>
+                    <td>{{ $gmts_colors[0] }}</td>
+                    <td>{{ $units[0] }}</td>
+                    <td>{{ $item_quantitys[0] }}</td>
+                    <td>{{ $unit_prices[0] }}</td>
+                    <td>{{ $total_amounts[0] }}</td>
+                </tr>
 
-                        $totalQnty = $item_quantitys[0];
-                        $totalAmnt = $total_amounts[0];
-                    ?>
+                @for($i = 1; $i <count($item_quantitys); $i++)
                     <tr>
                         <td>{{ $j++ }}</td>
-                        <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/"><b>{{ $purchaseOrder->booking_order_id }}</b></td>
-                        <td rowspan="{{ $spanLength }}" style="vertical-align: middle; /*horiz-align: middle;*/"><b>{{ $purchaseOrder->shipment_date }}</b></td>
-                        <td>{{ $erp_codes[0] }}</td>
-                        <td>{{ $item_codes[0] }}</td>
-                        <td>{{ $sizes[0] }}</td>
-                        <td>{{ $materials[0] }}</td>
-                        <td>{{ $gmts_colors[0] }}</td>
-                        <td>{{ $units[0] }}</td>
-                        <td>{{ $item_quantitys[0] }}</td>
-                        <td>{{ $unit_prices[0] }}</td>
-                        <td>{{ $total_amounts[0] }}</td>
-                    </tr>
-
-                    @for($i = 1; $i <count($item_quantitys); $i++)
-                        <tr>
-                            <td>{{ $j++ }}</td>
-                            <td>{{ $erp_codes[$i] }}</td>
-                            <td>{{ $item_codes[$i] }}</td>
-                            <td>{{ $sizes[$i] }}</td>
-                            <td>{{ $materials[$i] }}</td>
-                            <td>{{ $gmts_colors[$i] }}</td>
-                            <td>{{ $units[$i] }}</td>
-                            <td>{{ $item_quantitys[$i] }}</td>
-                            <td>{{ $unit_prices[$i] }}</td>
-                            <td>{{ $total_amounts[$i] }}</td>
-                        </tr>
-                        <?php
-                        $totalQnty += floatval($item_quantitys[$i]);
-                        $totalAmnt += floatval($total_amounts[$i]);
-                        ?>
-                    @endfor
-                    <tr>
-                        <td colspan="9"><b> Total</b></td>
-                        <td><b>{{ $totalQnty }}</b></td>
-                        <td></td>
-                        <td><b>{{ $totalAmnt }}</b></td>
+                        <td>{{ $sizes[$i] }}</td>
+                        <td>{{ $materials[$i] }}</td>
+                        <td>{{ $gmts_colors[$i] }}</td>
+                        <td>{{ $units[$i] }}</td>
+                        <td>{{ $item_quantitys[$i] }}</td>
+                        <td>{{ $unit_prices[$i] }}</td>
+                        <td>{{ $total_amounts[$i] }}</td>
                     </tr>
                     <?php
-                        $finalQnty += $totalQnty;
-                        $finalAmnt += $totalAmnt;
+                        $totalQnty += floatval($item_quantitys[$i]);
+                        $totalAmnt += floatval($total_amounts[$i]);
                     ?>
-                @endforeach
+                @endfor
 
                 <tr>
                     <td colspan="9"><b> Total</b></td>
-                    <td><b>{{ $finalQnty }}</b></td>
+                    <td>{{ $totalQnty }}</td>
                     <td></td>
-                    <td><b>{{ $finalAmnt }}</b></td>
+                    <td>{{ $totalAmnt }}</td>
                 </tr>
             </tbody>
             {{--</form>--}}

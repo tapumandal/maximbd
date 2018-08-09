@@ -43,15 +43,7 @@ class PurchaseOrderController extends Controller
         $date = date('dmY');
         $poUniqueId = $id . $date . "-" . $count;
 
-        $query = 'SELECT mrf.booking_order_id, mrf.shipmentDate, group_concat(mrf.erp_code) as erp_code, 
-          group_concat(mrf.item_code) as item_code, group_concat(mrf.item_size) as item_size, 
-          group_concat(mrf.matarial) as matarial, group_concat(mrf.item_price) as item_price, 
-          group_concat(mrf.gmts_color) as gmts_color, group_concat(mrf.item_quantity) as item_quantity, 
-          group_concat(msp.supplier_price) as supplier_price, group_concat(mp.unit_price) as unit_price, 
-          group_concat(mp.product_id) as product_id FROM mxp_MRF_table mrf LEFT JOIN mxp_product mp 
-          ON(mrf.item_code = mp.product_code AND mrf.erp_code = mp.erp_code) LEFT JOIN 
-          mxp_supplier_prices msp ON(mp.product_id = msp.product_id AND msp.supplier_id = ';
-
+        $query = 'SELECT mrf.*, msp.supplier_price, mp.unit_price, mp.product_id FROM mxp_MRF_table mrf LEFT JOIN mxp_product mp ON(mrf.item_code = mp.product_code AND mrf.erp_code = mp.erp_code) LEFT JOIN mxp_supplier_prices msp ON(mp.product_id = msp.product_id AND msp.supplier_id = ';
         $checkValidation = false;
 
         if($request->supplier_id != ''){
@@ -77,15 +69,15 @@ class PurchaseOrderController extends Controller
         if($checkValidation)
         {
             $mainQuery = rtrim($query," AND ");
-            $POList = DB::select($mainQuery.' group by booking_order_id ORDER BY id DESC');
-//            return $mainQuery;
+            $POList = DB::select($mainQuery.' ORDER BY id DESC');
+//            return $POList;
             return array($poUniqueId, $POList);
         }
         else
             return '';
     }
 
-    public function savePurchaseOrder(Request $request)
+    public function getReport(Request $request)
     {
         $setPurchaseOrders = json_decode($request->data, true);
 
@@ -107,27 +99,9 @@ class PurchaseOrderController extends Controller
             $po->total_amount = $setPurchaseOrders[$i][11];
             $po->save();
         }
-//        return $i;
-//        return $setPurchaseOrders;
-        return $setPurchaseOrders[1][0];
 
-    }
-
-    public function getReport(Request $request)
-    {
-//        $this->print_me($request->data);
-
-        $getPurchaseOrders = DB::select('select po_no, shipment_date, booking_order_id, 
-              group_concat(erp_code) as erp_code, 
-              group_concat(item_code) as item_code, 
-              group_concat(item_size) as item_sizes , 
-              group_concat(material) as materials, 
-              group_concat(gmts_color) as gmts_colors, 
-              group_concat(unit) as units, 
-              group_concat(item_quantity) as item_quantitys, 
-              group_concat(unit_price) as unit_prices, 
-              group_concat(total_amount) as total_amounts from mxp_purchase_orders where po_no = " '.
-            $request->data.'" group by booking_order_id');
+        $getPurchaseOrders = DB::select('select po_no, booking_order_id, shipment_date, erp_code, item_code, group_concat(item_size) as item_sizes , group_concat(material) as materials, group_concat(gmts_color) as gmts_colors, group_concat(unit) as units, group_concat(item_quantity) as item_quantitys, group_concat(unit_price) as unit_prices, group_concat(total_amount) as total_amounts from mxp_purchase_orders where po_no = "'.
+            $setPurchaseOrders[1][0].'" group by booking_order_id');
         $headerValue = DB::table("mxp_header")->where('header_type',11)->get();
         $footerData = DB::select("select * from mxp_reportFooter");
 

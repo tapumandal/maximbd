@@ -1,8 +1,26 @@
 @extends('layouts.dashboard')
 @section('page_heading', trans("others.mxp_menu_booking_list") )
 @section('section')
-
-@section('section')
+<style type="text/css">
+	.b1{
+		border-bottom-left-radius: 4px;
+		border-top-right-radius: 0px;
+	}
+	.b2{
+		border-bottom-left-radius: 0px;
+		border-top-right-radius: 4px;
+	}
+	.btn-group .btn + .btn,
+	 .btn-group .btn + .btn-group,
+	  .btn-group .btn-group + .btn,
+	   .btn-group .btn-group + .btn-group {
+    margin-left: -5px;
+}
+</style>
+	@if(Session::has('empty_booking_data'))
+        @include('widgets.alert', array('class'=>'danger', 'message'=> Session::get('empty_booking_data') ))
+    @endif
+    
 	<button class="btn btn-warning" type="button" id="booking_reset_btn">Reset</button>
 	<div id="booking_simple_search_form">
 		<div class="form-group custom-search-form col-sm-9 col-sm-offset-2">
@@ -69,22 +87,24 @@
 		</form>
 	</div>
 	<br>
+
 	<div class="row">
 		<div class="col-md-12 col-md-offset-0">
 			<table class="table table-bordered">
-				<tr>
-					<thead>
-					<th>Serial no</th>
-					<th>Buyer Name</th>
-					<th>Company Name</th>
-					<th>Attention</th>
-					<th>booking id</th>
-					<th>Order Date</th>
-					<th>Shipment Date</th>
-					<th>Status</th>
-					<th>Action</th>
-					</thead>
-				</tr>
+				<thead>
+					<tr>
+						<th>Serial no</th>
+						<th>Buyer Name</th>
+						<th>Company Name</th>
+						<th>Attention</th>
+						<th>booking id</th>
+						<th>Order Date</th>
+						<th>Shipment Date</th>
+						<th>Status</th>
+						<th width="">Action</th>
+					</tr>
+				</thead>
+				
 				@php($j=1)
 				<tbody id="booking_list_tbody">
 				@foreach($bookingList as $value)
@@ -97,15 +117,31 @@
 						<td>{{Carbon\Carbon::parse($value->created_at)}}</td>
 						<td></td>
 						<td>{{$value->booking_status}}</td>
-						<td>
-							<a href="{{ Route('booking_list_create_ipo', $value->booking_order_id) }}" class="btn btn-info">IPO</a>
-							<a href="{{ Route('booking_list_create_mrf', $value->booking_order_id) }}" class="btn btn-warning">MRF</a>
-							<form action="{{ Route('booking_list_action_task') }}" target="_blank">
-								<input type="hidden" name="bid" value="{{$value->booking_order_id}}">
-								<button class="btn btn-success">View</button>
-							</form>
+						<td width="12%">
+							<div class="btn-group">
 
-							<a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
+								<form action="{{ Route('booking_list_action_task') }}" target="_blank">
+									<input type="hidden" name="bid" value="{{$value->booking_order_id}}">
+									<button class="btn btn-success b1">Views</button>				
+
+									<button type="button" class="btn btn-success dropdown-toggle b2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    <span class="caret"></span>
+									    <span class="sr-only">Toggle Dropdown</span>
+									</button>
+
+									<ul class="dropdown-menu">
+									    <li>
+									    	<a href="{{ Route('booking_list_create_ipo', $value->booking_order_id) }}">IPO</a>
+									    </li>
+									    <li>
+									    	<a href="{{ Route('booking_list_create_mrf', $value->booking_order_id) }}">MRF</a>
+									    </li>
+                      <li>
+                        <a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
+                      </li>
+									</ul>
+							  	</form>
+							</div>
 						</td>
 					</tr>
 				@endforeach

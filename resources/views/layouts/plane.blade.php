@@ -19,6 +19,7 @@
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/preloder.css") }}" />
 	<link rel="stylesheet" href="{{ asset("assets/scripts/easy-autocomplete.min.css") }}" />
 	<link rel="stylesheet" href="{{ asset("assets/scripts/easy-autocomplete.themes.min.css") }}" />
+	<link rel="stylesheet" href="{{ asset("assets/scripts/bootstrap-datetimepicker.min.css") }}" />
 	<script src="{{ asset("assets/scripts/jquery-3.3.1.min.js") }}"></script>
 	<script src="{{ asset("assets/customByMxp/js/select2.min.js") }}"></script>
 	
@@ -33,10 +34,13 @@
 	<script type="text/javascript" src="{{ asset("js/all_product_table.js") }}"></script>
 	<script type="text/javascript" src="{{ asset("js/journal.js") }}"></script>
 	<script src="{{ asset("assets/scripts/json-2.4.js") }}"></script>
+	<script src="{{ asset("assets/scripts/moment.min.js") }}"></script>
+	<script src="{{ asset("assets/scripts/bootstrap-datetimepicker.min.js") }}"></script>
 	<script src="{{ asset("assets/scripts/multipleTable.js") }}"></script>
 	<script src="{{ asset("assets/scripts/task/buyer.js") }}"></script>
 	<script src="{{ asset("assets/scripts/task/taskTpye.js") }}"></script>
 	<script src="{{ asset("assets/scripts/jquery.easy-autocomplete.min.js") }}"></script>
 	<script type="text/javascript" src="{{ asset("js/production.js") }}"></script>
+	@yield('LoadScript')
 </body>
 </html>

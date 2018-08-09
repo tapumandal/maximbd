@@ -29,11 +29,11 @@
                 {{--<div class="col-sm-5">--}}
                     <div class="col-sm-3">
                         <label class="col-sm-12 label-control">Delivery Date from</label>
-                        <input type="text" name="from_oder_date_search" class="form-control" id="from_oder_date_search">
+                        <input type="date" name="from_oder_date_search" class="form-control" id="from_oder_date_search">
                     </div>
                     <div class="col-sm-3">
                         <label class="col-sm-12 label-control">Delivery Date to</label>
-                        <input type="text" name="to_oder_date_search" class="form-control" id="to_oder_date_search">
+                        <input type="date" name="to_oder_date_search" class="form-control" id="to_oder_date_search">
                     </div>
                 {{--</div>--}}
                 <br>
@@ -79,17 +79,7 @@
             </table>
 
             <div class="col-sm-2 col-sm-offset-10">
-                <from type="post" action="{{ Route('generate_purchase_order_report') }}" id="save_purcahe_order_form">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="report_all_data" class="report_all_data">
-                    <input type="submit" id="save_purcahe_order" class="btn btn-success save_purcahe_order" value="Get Report">
-                </from>
-                {{--<button class="btn btn-success save_purcahe_order">Get Report</button>--}}
-            </div>
-            <div class="pagination-container">
-                <nav>
-                    <ul class="pagination"></ul>
-                </nav>
+                <button class="btn btn-success save_purcahe_order">Get Report</button>
             </div>
             {{--<div class="pagination-container">--}}
                 {{--<nav>--}}
@@ -100,11 +90,5 @@
     </div>
     <script type="text/javascript">
         $(".selections").select2();
-    </script>
-@endsection
-@section("LoadScript")
-    <script type="text/javascript">
-        $("#from_oder_date_search").datetimepicker();
-        $("#to_oder_date_search").datetimepicker();
     </script>
 @endsection

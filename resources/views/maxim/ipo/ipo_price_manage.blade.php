@@ -3,7 +3,7 @@
 @section('page_heading','')
 @section('section')
 
-<?php $increase = $initIncrease; ?>
+<?php $increase = $initIncrease;?>
 <form action="{{ Route('task_action') }}" method="POST">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 <table class="table table-bordered mainBody">
@@ -21,56 +21,56 @@
             <th width="10%">Confirmation Date</th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
     	<?php
-    		$j = 1;
-    		$totalAllQty = 0;
-    		$totalAllIncrQty = 0;
-    		$totalUsdAmount = 0;
-    		$BDTandUSDavarage = 80;
-    		$rowspanValue = 0;
-    	 ?>
+$j = 1;
+$totalAllQty = 0;
+$totalAllIncrQty = 0;
+$totalUsdAmount = 0;
+$BDTandUSDavarage = 80;
+$rowspanValue = 0;
+?>
     	 	@foreach($sentBillId as $counts)
     	 		<?php
-    	 			$count = 1;
-    	 			$rowspanValue += $count;
-    	 		 ?>
+$count = 1;
+$rowspanValue += $count;
+?>
     	 	@endforeach
 
 			<?php
-            	$ipoIdInc = 0;
-			?>
+$ipoIdInc = 0;
+?>
     		@foreach ($sentBillId as $key => $item)
 
     			<?php
-    				$i = 0;
-    				$k = 0;
+$i = 0;
+$k = 0;
 
-    				$totalQty =0;
-    				$totalIncrQty = 0;
-    				$itemsize = explode(',', $item->item_size);  				
-    				$qty = explode(',', $item->item_quantity);
-    				$itemlength = 0;
-    				foreach ($itemsize as $itemlengths) {
-    					$itemlength = sizeof($itemlengths);
-    				}
-    				$itemQtyValue = array_combine($itemsize, $qty);		
-    			?>
-    			
-    			
+$totalQty = 0;
+$totalIncrQty = 0;
+$itemsize = explode(',', $item->item_size);
+$qty = explode(',', $item->item_quantity);
+$itemlength = 0;
+foreach ($itemsize as $itemlengths) {
+	$itemlength = sizeof($itemlengths);
+}
+$itemQtyValue = array_combine($itemsize, $qty);
+?>
+
+
 	    			<tr>
 	    				<td>{{$j++}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->poCatNo}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->item_code}}</td>
-	    				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>			    		
+	    				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>
 			    			@if ($itemlength >= 1 )
-				    			<td colspan="2" class="colspan-td">  				
+				    			<td colspan="2" class="colspan-td">
 				    				<table >
 				    					@foreach ($itemQtyValue as $size => $Qty)
-				    					<?php 
-				    						$i++;
-				    						$totalQty += $Qty; 
-				    					?>
+				    					<?php
+$i++;
+$totalQty += $Qty;
+?>
 				    					<tr>
 				    						<td width="50%">{{$size}}</td>
 							    			<td width="50%">{{$Qty}}</td>
@@ -90,9 +90,9 @@
 				    				<table>
 				    					@foreach ($itemQtyValue as $size => $Qty)
 											<?php
-												$k++;
-												$totalIncrQty += ceil(($Qty*$increase)/100 + $Qty);
-											?>
+$k++;
+$totalIncrQty += ceil(($Qty * $increase) / 100 + $Qty);
+?>
 
 											<tr>
 
@@ -101,16 +101,18 @@
 
 												<?php
 
-												?>
+?>
 
 												<input type="hidden" name="ipo_id[]" value="{{$ipoIds[$ipoIdInc]}}" >
 												<td width="100%">
-													<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage">
+
+													<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage" class="form-control">
+
 												</td>
 
 											</tr>
 				    					@endforeach
-										<?php $ipoIdInc = $ipoIdInc+1; ?>
+										<?php $ipoIdInc = $ipoIdInc + 1;?>
 
 				    					@if( $k > 1 )
 				    					<tr>
@@ -118,13 +120,13 @@
 				    					</tr>
 				    					@endif
 				    				</table>
-				    				</div> 				
+				    				</div>
 				    			</td>
-				    		@endif			    		   
-			    		<?php 
-    						$totalAllQty += $totalQty;
-    						$totalAllIncrQty += $totalIncrQty;
-    					?>
+				    		@endif
+			    		<?php
+$totalAllQty += $totalQty;
+$totalAllIncrQty += $totalIncrQty;
+?>
     					<td></td>
     					<td style="padding-top: 20px;">
     						{{Carbon\Carbon::parse($billdata->created_at)->format('d-m-Y')}}
@@ -132,7 +134,7 @@
     					<td></td>
 	    			</tr>
     		@endforeach
-    	
+
     	  <tr>
 		</tr>
 

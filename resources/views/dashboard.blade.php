@@ -20,8 +20,8 @@
             padding-top: 15px;
         }
         .top-div{
-            background-color: #f9f9f9; 
-            padding:5px 0px 5px 10px; 
+            background-color: #f9f9f9;
+            padding:5px 0px 5px 10px;
             border-radius: 7px;
         }
         #show_preloder{
@@ -56,18 +56,19 @@
                                 <div class="col-md-6">
                                     <select name="taskType" class="form-control" id="taskType">
                                         <option value="">Select Task Type</option>
-                                        <?php 
-                                            if(isset($taskAccessList) && !empty($taskAccessList)){
-                                                foreach ($taskAccessList as $taskkey) {
-                                                    print '<option value="'.$taskkey.'">'.ucwords($taskkey).'</option>';
-                                                }
-                                            }
-                                        ?>
+                                        <?php
+if (isset($taskAccessList) && !empty($taskAccessList)) {
+	foreach ($taskAccessList as $taskkey) {
+		print '<option value="' . $taskkey . '">' . ucwords($taskkey) . '</option>';
+	}
+}
+?>
                                     </select>
-                                </div>                        
+                                </div>
                             </div>
-                            <?php if(isset($taskAccessList) && !empty($taskAccessList)){ ?>
-                            
+                            <?php if (isset($taskAccessList) && !empty($taskAccessList)) {
+	?>
+
                             <div class="form-group buyerChange">
                                 <label class="col-md-4 control-label">
                                     <span class="pull-right">Buyer Name</span>
@@ -75,22 +76,22 @@
                                 <div class="col-md-6">
                                     <select name="buyerName" class="form-control" id="buyerChange" disabled="true">
                                         <option value="">Choose buyer Name</option>
-                                        <?php 
-                                            $buyerName = [];
-                                            foreach ($selectBuyer as $value) {
-                                                $buyerName[] = $value->name_buyer;
-                                                }
-                                            $unique_data = array_unique($buyerName);
-                                        ?>
-                                        
+                                        <?php
+$buyerName = [];
+	foreach ($selectBuyer as $value) {
+		$buyerName[] = $value->name_buyer;
+	}
+	$unique_data = array_unique($buyerName);
+	?>
+
                                         @foreach($unique_data as $buyer)
                                             <option>{{$buyer}}</option>
                                         @endforeach
-                                        
+
                                     </select>
-                                </div>                        
+                                </div>
                             </div>
-                            
+
                             <div class=" buyer_company form-group hidden">
                                 <label class="col-md-4 control-label">
                                     <span class="pull-right">Company Name</span>
@@ -98,7 +99,7 @@
                                 <div class="col-md-6">
                                     <select name="companyName" class="form-control" id="companyName" disabled="true">
                                     </select>
-                                </div>                        
+                                </div>
                             </div>
 
                             <div class="form-group piFormatH">
@@ -113,7 +114,7 @@
                                         <option value="1003">DARE2B</option>
                                         <option>PI Format 4</option>
                                     </select>
-                                </div>                        
+                                </div>
                             </div>
 
                             <div class="form-group orderId">
@@ -129,13 +130,13 @@
 
                             <div class="ipo_increase form-group hidden">
                                 <label class="col-md-4 control-label">
-                                    <span class="pull-right">IPO Increase Percentage</span>
+                                    <span class="pull-right">IPO Increase Percentage (Optional)</span>
                                 </label>
                                 <div class="col-md-6">
                                     <input type="text" name="ipoIncrease" class="form-control" disabled="true" id="ipoIncrease" placeholder="Increase Value Percentage">
                                 </div>
                             </div>
-                            <?php } ?>
+                            <?php }?>
                             <div class="form-group">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
@@ -150,10 +151,10 @@
             </div>
         </div>
     </div>
-<?php if(isset($taskAccessList) && !empty($taskAccessList)){ ?>
+<?php if (isset($taskAccessList) && !empty($taskAccessList)) {?>
 <div class="row hidden" id="show_preloder">
     <div class="col-md-12 col-xs-12 col-sm-12">
-        <div class="top-div">                    
+        <div class="top-div">
                     <div class="row">
                         <div class="col-md-6 col-xs-6">
                             <div class="form-group">
@@ -162,7 +163,7 @@
                                 <div class="">
                                     <input type="text" name="buyerName" class="form-control" readonly="true" value="" title="Buyer Name">
                                 </div>
-                            </div>                      
+                            </div>
                         </div>
 
                         <div class="col-md-6 col-xs-6">
@@ -214,11 +215,11 @@
                         </tbody>
                     </table>
 
-                    
+
                 </div>
     </div>
 </div>
-<?php } ?>
+<?php }?>
 
 
 <div class="pre-loader">
@@ -253,5 +254,5 @@
             }
      });
     })(jQuery);
-</script>    
+</script>
 @stop
