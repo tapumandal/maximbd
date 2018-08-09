@@ -1,5 +1,5 @@
 @extends('maxim.layouts.layouts')
-@section('title','PI Maxim')
+@section('title','Bill Maxim')
 @section('print-body')
 <?php 
 	$objectConvertController = new App\Http\Controllers\Source\ConverterText();
@@ -38,7 +38,7 @@
 @endforeach
 <div class="row header-bottom">
 	<div class="col-md-12 header-bottom-b">
-		<span>PROFORM INVOICE</span>
+		<span>Bill Copy</span>
 	</div>
 </div>
 
@@ -110,12 +110,6 @@
 		$picate[$rr][] = $Details->item_code;
 		$rr++;
 	}
-
-	$BDTandUSD = 0;
-
-	// print_r("<pre>");
-	// print_r($picate);
-	// print_r("</pre>");
 ?>
 <table class="table table-bordered">
 	<thead>
@@ -133,7 +127,9 @@
 	        <th width="">Descreption</th>
 	        <th width="">Qty / Pcs</th>
 	        <th width="">Unit Price / Pcs</th>
+	        <th>BDT</th>
 	        <th width="15%">USD Amount / USD</th>
+	        <th>BDT</th>
 	    </tr>
 	</thead>
 	<tbody>
@@ -149,10 +145,9 @@
 
 				$totalAllqnty = $totalAllqnty + $totalQntyValue;
 				$totalUsdAmount = $totalUsdAmount + $totalPrice;
-				
-				// print_r("<pre>");
-				// print_r($Details);
-				// print_r("</pre>");
+
+				$BDTandUSD = $conversion_rate * $totalUsdAmount;
+    			$BDTandUSD = floor($BDTandUSD * 100) / 100;
 			?>
 
 			<tr>
@@ -169,14 +164,38 @@
 				<td>{{$Details->item_description}}</td>
 				<td>{{$totalQntyValue}}</td>
 				<td>{{(!empty($Details->item_price)? '$'.$Details->item_price: '')}}</td>
+
+				<td>
+					@if(!empty(totalPrice))
+					<img src="/assets/img/bd_taka_icon.png" width="10px">
+					{{ $Details->item_price * $conversion_rate }}
+					@endif
+				</td>
+
 				<td>{{(!empty($totalPrice)? '$'.$totalPrice: '')}}</td>
+
+				<td>@if(!empty(totalPrice))
+					<img src="/assets/img/bd_taka_icon.png" width="10px">
+					{{ $totalPrice * $conversion_rate}}
+					@endif
+				</td>
 			</tr>
 		@endforeach		
 			<tr>
-				<td colspan="{{$countTotalspan}}"> <center>{{(1003 == $formatTypes)?'TOTAL QTY & VALUE':'Total'}}</center></td>
+				<td colspan="{{$countTotalspan}}"> <center><b>{{(1003 == $formatTypes)?'TOTAL QTY & VALUE':'Total'}}</b></center></td>
 				<td>{{$totalAllqnty}}</td>
-				<td></td>
+				<td colspan="2"></td>
+				<td colspan="2"></td>
+			</tr>
+			<tr>
+				<td colspan="9"><center><b>Total USD</b></center></td>
+				<!-- <td> 80</td> -->
 				<td>{{(!empty($totalUsdAmount)? '$'.$totalUsdAmount: '')}}</td>
+			</tr>
+			<tr>
+				<td colspan="8"><center><b>Total BDT</b></center></td>
+				<td> {{$conversion_rate}}</td>
+				<td><img src="/assets/img/bd_taka_icon.png" width="10px"> {{(!empty($BDTandUSD)? $BDTandUSD: '')}}</td>
 			</tr>
 	
 	</tbody>
@@ -213,7 +232,7 @@
 					</div>
 				</td>
 			</tr>
-			<!-- <tr>
+			<tr>
 				<td>
 					<div style="text-align:;font-weight: bold;">
 						<?php if(sizeof($fractionBD) == 1){?>
@@ -223,7 +242,7 @@
 						<?php }?>
 					</div>
 				</td>
-			</tr> -->
+			</tr>
 		</table>
 	</div>
 </div>

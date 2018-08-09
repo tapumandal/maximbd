@@ -61,7 +61,8 @@ class TaskController extends Controller {
 
 		} elseif ($taskType === 'PI') {
 
-			$formatTypes = $request->piFormat;
+			$formatTypes = '1002';
+			// $formatTypes = $request->piFormat;
 			$companyInfo = DB::table('mxp_header')->where('header_type', 11)->get();
 			$bookingDetails = DB::select('call getBookinAndBuyerDeatils("' . $request->bookingId . '")');
 			if (empty($bookingDetails)) {
@@ -302,6 +303,21 @@ class TaskController extends Controller {
 			}
 
 			return view('maxim.challan.challan', compact('bookingDetails'));
+		} else if($taskType === 'bill'){
+
+			$conversion_rate = $request->conversion_rate;
+			$companyInfo = DB::table('mxp_header')->where('header_type', 11)->get();
+			$bookingDetails = DB::select('call getBookinAndBuyerDeatils("' . $request->bookingId . '")');
+			if (empty($bookingDetails)) {
+				StatusMessage::create('empty_booking_data', 'This booking Id doesnot show any result . Please check booking Id !');
+
+				return \Redirect()->Route('dashboard_view');
+			}
+
+			$footerData = DB::select("select * from mxp_reportFooter");
+
+			return view('maxim.bill_copy.bill_report', compact('companyInfo', 'bookingDetails', 'footerData', 'conversion_rate'));
+
 		} else {
 			$validMessages = [
 				'taskType.required' => 'TaskType field is required.',
