@@ -347,6 +347,7 @@ $('#purchase_order_list_search_form').on('submit', function (ev) {
 
     ev.preventDefault();
     var  data = $('#purchase_order_list_search_form').serialize();
+    console.log(data);
     var supplier_id = $('#supplier_id').val();
     if (supplier_id != '')
     {
@@ -354,6 +355,7 @@ $('#purchase_order_list_search_form').on('submit', function (ev) {
 
         if((results.responseJSON != '') && (results.responseJSON != null))
         {
+            // console.log(results.responseJSON);
             addRowInPOList(results.responseJSON[1]/*, 0*/);
             $('.polistResetBtnAndNo').css('display','block');
             $('.poTableList').css('display','block');
@@ -387,6 +389,8 @@ function addRowInPOList(results/*, start*/)
 
     var finalTotalQnty = 0;
     var finalTotalAmnt = 0;
+    var defaultValue = '';
+    var defaultNumber = 0.00;
 
     // var position = start+1;
     // start = start*15;
@@ -438,17 +442,17 @@ function addRowInPOList(results/*, start*/)
         var spanLength = quantities.length;
 
         $('#po_list_tbody').append('<tr class="po_list_table"><td>'+sl+
-            '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="booking_order_id_'+i+'_0"><b>'+rows[i].booking_order_id+
-            '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="shipmentDate_'+i+'_0"><b>'+rows[i].shipmentDate+
-            '</td><td class="erp_code_'+i+'_0">'+erp_codes[0]+
-            '</td><td class="item_code_'+i+'_0">'+item_codes[0]+
-            '</td><td class="sizes_'+i+'_0">'+sizes[0]+
-            '</td><td class="matarial_'+i+'_0">'+rows[i].matarial+
-            '</td><td class="gmts_color_'+i+'_0">'+colors[0]+
+            '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="booking_order_id_'+i+'_0"><b>'+((rows[i].booking_order_id)? rows[i].booking_order_id:defaultValue)+
+            '</b></td><td rowspan="'+spanLength+'" style="vertical-align: middle; horiz-align: middle;" class="shipmentDate_'+i+'_0"><b>'+((rows[i].shipmentDate)? rows[i].shipmentDate:defaultValue)+
+            '</td><td class="erp_code_'+i+'_0">'+((erp_codes[0])? erp_codes[0]:defaultValue)+
+            '</td><td class="item_code_'+i+'_0">'+((item_codes[0])? item_codes[0]:defaultValue)+
+            '</td><td class="sizes_'+i+'_0">'+((sizes[0])? sizes[0]:defaultValue)+
+            '</td><td class="matarial_'+i+'_0">'+((rows[i].matarial)? rows[i].matarial:defaultValue)+
+            '</td><td class="gmts_color_'+i+'_0">'+((colors[0])? colors[0]:defaultValue)+
             '</td><td class="unit_'+i+'_0">'+''+
-            '</td><td class="quantities_'+i+'_0">'+quantities[0]+
-            '</td><td class="unitPrice_'+i+'_0">'+unit_prices[0]+
-            '</td><td class="totalPrice_'+i+'_0">'+(quantities[0]*unit_prices[0]).toFixed(2)+
+            '</td><td class="quantities_'+i+'_0">'+((quantities[0])? quantities[0]:defaultNumber)+
+            '</td><td class="unitPrice_'+i+'_0">$'+((unit_prices[0])? unit_prices[0]:defaultNumber)+
+            '</td><td class="totalPrice_'+i+'_0">$'+((((quantities[0])? quantities[0]:defaultNumber)*((unit_prices[0]? unit_prices[0]:defaultNumber)))).toFixed(2)+
             '</td></tr>');
         sl++;
 
@@ -457,38 +461,40 @@ function addRowInPOList(results/*, start*/)
 
         for (var j = 1; j < spanLength; j++)
         {
-            totalQnty += parseFloat(quantities[j]);
-            totalAmount += parseFloat(quantities[j]*unit_prices[j]);
+            var qnt = (quantities[j])? quantities[j]:defaultNumber;
+            var amt = (unit_prices[j])? unit_prices[j]:defaultNumber;
+            totalQnty += parseFloat((quantities[j])? quantities[j]:defaultNumber);
+            totalAmount += parseFloat(qnt*amt);
 
             $('#po_list_tbody').append('<tr class="po_list_table"><td>'+sl+
-                '</td><td class="erp_code_'+i+'_'+j+'">'+erp_codes[j]+
-                '</td><td class="item_code_'+i+'_'+j+'">'+item_codes[j]+
-                '</td><td class="sizes_'+i+'_'+j+'">'+sizes[j]+
-                '</td><td class="matarial_'+i+'_'+j+'">'+rows[i].matarial+
-                '</td><td class="gmts_color_'+i+'_'+j+'">'+colors[j]+
+                '</td><td class="erp_code_'+i+'_'+j+'">'+((erp_codes[j])? erp_codes[j]:defaultValue)+
+                '</td><td class="item_code_'+i+'_'+j+'">'+((item_codes[j])? item_codes[j]:defaultValue)+
+                '</td><td class="sizes_'+i+'_'+j+'">'+((sizes[j])? sizes[j]:defaultValue)+
+                '</td><td class="matarial_'+i+'_'+j+'">'+((rows[i].matarial)? rows[i].matarial:defaultValue)+
+                '</td><td class="gmts_color_'+i+'_'+j+'">'+((colors[j])? colors[j]:defaultValue)+
                 '</td><td class="unit_'+i+'_'+j+'">'+''+
-                '</td><td class="quantities_'+i+'_'+j+'">'+quantities[j]+
-                '</td><td class="unitPrice_'+i+'_'+j+'">'+unit_prices[j]+
-                '</td><td class="totalPrice_'+i+'_'+j+'">'+(quantities[j]*unit_prices[j]).toFixed(2)+
+                '</td><td class="quantities_'+i+'_'+j+'">'+((quantities[j])? quantities[j]:defaultNumber)+
+                '</td><td class="unitPrice_'+i+'_'+j+'">$'+((unit_prices[j])? unit_prices[j]:defaultNumber)+
+                '</td><td class="totalPrice_'+i+'_'+j+'">$'+(qnt*amt).toFixed(2)+
                 '</td></tr>');
             sl++;
         }
         $('#po_list_tbody').append('<tr class="po_list_table"><td colspan="9" style="vertical-align: middle;"><b>Total</b></td><td class="totalQnty_'+i+'_l"><b>'+totalQnty.toFixed(2)+
             '</b></td><td class="totalUnitPirce_'+i+'_l"><b>'+''+
-            '</b></td><td class="totalAmount_'+i+'_l"><b>'+totalAmount.toFixed(2)+
+            '</b></td><td class="totalAmount_'+i+'_l"><b>$'+totalAmount.toFixed(2)+
             '</b></td></tr>');
 
         finalTotalQnty += totalQnty;
         finalTotalAmnt += totalAmount;
     }
 
-    $('#save_purcahe_order_form').on('submit', function (ev) {
-        alert('submit');
-    });
+    // $('#save_purcahe_order_form').on('submit', function (ev) {
+    //     alert('submit');
+    // });
 
     $('#po_list_tbody').append('<tr class="po_list_table"><td colspan="9" style="vertical-align: middle;"><b> Final Total</b></td><td class="totalQnty_'+i+'_l"><b>'+finalTotalQnty.toFixed(2)+
         '</b></td><td class="totalUnitPirce_'+i+'_l"><b>'+''+
-        '</b></td><td class="totalAmount_'+i+'_l"><b>'+finalTotalAmnt.toFixed(2)+
+        '</b></td><td class="totalAmount_'+i+'_l"><b>$'+finalTotalAmnt.toFixed(2)+
         '</b></td></tr>');
 }
 
@@ -540,7 +546,16 @@ $('.save_purcahe_order').on('click', function (ev) {
 
     // alert(saveData.responseText);
     var getUrl = document.URL;
-    var setUrl = getUrl.replace("/list","/report?data="+saveData.responseText);
+    var Supplier_id = $('#supplier_id').val();
+    var data = po_no+','+Supplier_id;
+    var setUrl = getUrl.replace("/list","/report?data="+data);
     // // console.log(datas);
     window.location.assign(setUrl);
 });
+
+// $('#to_oder_date_search').on('click',function (ev) {
+//     // alert('clicked');
+//     // $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+// });
+
+// $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});

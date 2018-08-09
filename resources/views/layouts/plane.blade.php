@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}" />
 
 		{{-- for select2 --}}
-	
+
 	<link href="{{ asset("assets/customByMxp/css/select2.min.css") }}" rel="stylesheet" />
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/preloder.css") }}" />
 	<link rel="stylesheet" href="{{ asset("assets/scripts/easy-autocomplete.min.css") }}" />
@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="{{ asset("assets/scripts/bootstrap-datetimepicker.min.css") }}" />
 	<script src="{{ asset("assets/scripts/jquery-3.3.1.min.js") }}"></script>
 	<script src="{{ asset("assets/customByMxp/js/select2.min.js") }}"></script>
-	
+
 </head>
 <body>
 	<?php $languages = App\Http\Controllers\Trans\TranslationController::getLanguageList();?>

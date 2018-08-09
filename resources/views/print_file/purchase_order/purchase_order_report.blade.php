@@ -41,9 +41,19 @@
         </div>
     </div>
     <br>
-    <div  style="background-color: #2b542c; color: #ffffff;" class="col-sm-3 col-sm-offset-9" align="center">
-        <h4 class="PONoInList"> PO no: {{ $purchaseOrders[0]->po_no }}</h4>
-    </div>
+        <div class="col-sm-4">
+            <p>Date: <b>{{ date('Y-m-d')}}</b></p>
+            <p>Company Name: <b>{{ $supplier->name }}</b></p>
+            <p>Company Address: <b>{{ $supplier->address }}</b></p>
+            <p>Mobile No: <b>{{ $supplier->phone }}</b></p>
+        </div>
+    <br>
+    <br>
+        <div  style="background-color: #2b542c; color: #ffffff;" class="col-sm-3 col-sm-offset-5" align="center">
+
+            <h4 class="PONoInList"> PO no: {{ $purchaseOrders[0]->po_no }}</h4>
+        </div>
+
         <br>
         <br>
     <div class="row body-top">
@@ -60,8 +70,8 @@
                 <th>Color</th>
                 <th>Unit</th>
                 <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total Amount</th>
+                <th>Unit Price($)</th>
+                <th>Total Amount($)</th>
                 </thead>
             </tr>
 
@@ -99,8 +109,8 @@
                         <td>{{ $gmts_colors[0] }}</td>
                         <td>{{ $units[0] }}</td>
                         <td>{{ $item_quantitys[0] }}</td>
-                        <td>{{ $unit_prices[0] }}</td>
-                        <td>{{ $total_amounts[0] }}</td>
+                        <td>${{ $unit_prices[0] }}</td>
+                        <td>${{ $total_amounts[0] }}</td>
                     </tr>
 
                     @for($i = 1; $i <count($item_quantitys); $i++)
@@ -113,8 +123,8 @@
                             <td>{{ $gmts_colors[$i] }}</td>
                             <td>{{ $units[$i] }}</td>
                             <td>{{ $item_quantitys[$i] }}</td>
-                            <td>{{ $unit_prices[$i] }}</td>
-                            <td>{{ $total_amounts[$i] }}</td>
+                            <td>${{ $unit_prices[$i] }}</td>
+                            <td>${{ $total_amounts[$i] }}</td>
                         </tr>
                         <?php
                         $totalQnty += floatval($item_quantitys[$i]);
@@ -125,7 +135,7 @@
                         <td colspan="9"><b> Total</b></td>
                         <td><b>{{ $totalQnty }}</b></td>
                         <td></td>
-                        <td><b>{{ $totalAmnt }}</b></td>
+                        <td><b>${{ $totalAmnt }}</b></td>
                     </tr>
                     <?php
                         $finalQnty += $totalQnty;
@@ -134,10 +144,84 @@
                 @endforeach
 
                 <tr>
-                    <td colspan="9"><b> Total</b></td>
+                    <td colspan="9"><b>Final Total</b></td>
                     <td><b>{{ $finalQnty }}</b></td>
+                    <td><b>US$</b></td>
+                    <td><b>${{ $finalAmnt }}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="10" style="font-size: 85%;"><b>Quality Requirements</b></td>
                     <td></td>
-                    <td><b>{{ $finalAmnt }}</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="10" rowspan="2">
+                        <p style="font-size: 80%;">1. All the products must be passed OEK-TEX testing grade I, color fastness to washng staining required grade 4-5. Dimensional stability should br controlled into -3%to +1%</p>
+                        <p style="font-size: 80%;">2. Please ensure the color is matching with the sample, label size before and after folding must follow the sample, ensure the cutting edge is straight.</p>
+                        <p style="font-size: 80%;">3. Please follow the lead time and offer more 1%-2% as the spare.</p>
+                        <p style="font-size: 80%;">4. Please ensure the maximum packing no more than 500pcs/bag.</p>
+                    </td>
+                    <td style="font-size: 85%;"><b>Tax rate: </b></td>
+                    <td></td>
+                </tr>
+                {{--<tr>--}}
+                    {{--<td colspan="10"><b></b></td>--}}
+                    {{--<td colspan="2"><b></b></td>--}}
+                {{--</tr>--}}
+                <tr>
+                    <td colspan="2" style="font-size: 85%;"><b>SALES NO: </b></td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <p style="font-size: 80%;">1. Maxim Label & Packing (BD) Pvt., Ltd hereto referred to as(Buyer) and
+                        (Seller) agree on the following payment terms: Seller needs to notify Buyer before delivery with Invoice,
+                        Packing list, Order number, Product name and quantity needs to be shown on Carton Box. Once buyer
+                        receive the goods from seller and have completed total QC insception, Payment will be mademwithin 3 months.</p>
+                        <p style="font-size: 80%;">2. Seller is responsible and confirm understanding of Buyer order form to make
+                        sure that all information is correct. Seller must follow Buyers order from and production specfications. If
+                        there are any changes, Buyer needs to modify the seller by way of writing.</p>
+                        <p style="font-size: 80%;">3. Quality: Seller must gurantee quality, quality and lead time to Seller in
+                        accordance to the Sellers requirements. If there are any issues with quality, quantity and lead time, causing damges
+                        to Buyer,seller is responsilbe for full payment of damages to Buyer.</p>
+                        <p style="font-size: 80%;">4. Seller must consider all information, sample, artwork etc. given by Buyer as confidential information.</p>
+                        <p style="font-size: 80%;">5. This orders will commence from date of signing fro both Buyer and Seller. Orginal concat will be
+                        kept by Buyer. Contract of Place at Buyers office.</p>
+                        <p style="font-size: 80%;">6. If threre are any disputes risen, the laws applicable will be law of place the contract
+                         was concluded. Bangladesh law will apply.</p>
+                        <p style="font-size: 80%;">7. This sales contract is valid for 3 days by return.</p>
+                    </td>
+                    <td colspan="5" style="font-size: 85%;"><b>
+                        <div class="col-sm-6">
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Buyer(Stamp)
+                            Authorised signatory
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Date:
+                        </div>
+                        <div class="col-sm-6">
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Seller(Stamp)
+                            Authorised signatory
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Date:
+                        </div>
+                    </b></td>
                 </tr>
             </tbody>
             {{--</form>--}}
@@ -150,10 +234,10 @@
         {{--</nav>--}}
         {{--</div>--}}
 
-    <h5><strong>REMARK</strong></h5>
-    <p>If the quantity of goods you recevied is not in confirmity as in packing irst or the qualify, packing problem incurred, please
-        inform us in 3days. After this period, you concern about this goods shall not be our responsibility.</p>
-    <h5>Please confirm receipt with your signature: </h5><br><br>
+    {{--<h5><strong>REMARK</strong></h5>--}}
+    {{--<p>If the quantity of goods you recevied is not in confirmity as in packing irst or the qualify, packing problem incurred, please--}}
+        {{--inform us in 3days. After this period, you concern about this goods shall not be our responsibility.</p>--}}
+    {{--<h5>Please confirm receipt with your signature: </h5><br><br>--}}
 
 
 
