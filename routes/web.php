@@ -71,10 +71,10 @@ Route::group(
         'uses'=>'Production\PurchaseOrderController@getPOListBySearch'
     ));
 
-//    Route::get('/save_purcahse_order/', array(
-//        'as'=>'save_purcahse_order',
-//        'uses'=>'Production\PurchaseOrderController@savePurchaseOrder'
-//    ));
+    Route::get('/save_purcahse_order/', array(
+        'as'=>'save_purcahse_order',
+        'uses'=>'Production\PurchaseOrderController@savePurchaseOrder'
+    ));
 
     // Route::get('/create_urgent_client', array(
     // 	'as' => 'add_urgent_client',
