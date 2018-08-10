@@ -222,11 +222,11 @@
 					<div style="text-align:;font-weight: bold;">
 						<?php if(sizeof($fractionUSD) == 1){ ?>
 
-						<span>1. TOTAL AMOUNT : USD : {{$amountInWordUsd}} {{(empty($amountInWordUsd))?'':'Only'}}</span>
+						<span>1. TOTAL AMOUNT : USD : {{$amountInWordUsd}} {{(empty($amountInWordUsd))?'':'USD Only'}}</span>
 
 						<?php }else{?>
 
-						<span>1. TOTAL AMOUNT : USD : {{$amountInWordUsd}} And {{$fractionInWordUSD}} Cents Only</span>
+						<span>1. TOTAL AMOUNT : USD : {{$amountInWordUsd}} And {{$fractionInWordUSD}} Cents BDT Only</span>
 
 						<?php }?>
 					</div>
@@ -236,9 +236,9 @@
 				<td>
 					<div style="text-align:;font-weight: bold;">
 						<?php if(sizeof($fractionBD) == 1){?>
-						<span>1. TOTAL AMOUNT : BDT : {{$amountInWordBD}} Only</span>
+						<span>1. TOTAL AMOUNT : BDT : {{$amountInWordBD}} BDT Only</span>
 						<?php }else{?>
-						<span>1. TOTAL AMOUNT : BDT : {{$amountInWordBD}} And {{$fractionInWordBD}} Cents Only</span>
+						<span>1. TOTAL AMOUNT : BDT : {{$amountInWordBD}} And {{$fractionInWordBD}} Cents BDT Only</span>
 						<?php }?>
 					</div>
 				</td>

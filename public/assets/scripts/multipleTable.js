@@ -353,6 +353,8 @@ $(document).ready(function(){
 
   $("#item_codemxp").easyAutocomplete(itemoptions);
   $("#bookingId").easyAutocomplete(bookingoptions);
+  $(".easy-autocomplete").css("width","100%");
+
     $("#bookingIdList").on("click",".challan_list_rmv", function(){
         var order_item = $(this).parent(".challan_item").text();
         $(this).parent(".challan_item").remove();

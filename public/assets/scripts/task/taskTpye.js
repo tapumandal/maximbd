@@ -120,6 +120,9 @@ $(document).ready(function(){
 			$('#bookingId').attr("disabled","true");
 
 			$('.buyer_company').addClass('hidden');
+			$('.buyerChange').addClass('hidden');
+			$('.orderId').addClass('hidden');
+			$('.ipo_increase').addClass('hidden');
             $('#bookingIdList').addClass('hidden');
 			$('.conversion_rate').addClass('hidden');
 		}
