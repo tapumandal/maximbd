@@ -556,5 +556,5 @@ $('.save_purcahe_order').on('click', function (ev) {
     var Supplier_id = $('#supplier_id').val();
     var data = po_no+','+Supplier_id;
     var setUrl = getUrl.replace("/list","/report?data="+data);
-    // window.location.assign(setUrl);
+    window.location.assign(setUrl);
 });
