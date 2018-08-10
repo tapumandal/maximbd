@@ -957,6 +957,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'routeAccess'], function () {
 
+        Route::get('booking/list/detailsView/{booking_id?}',
+            [
+                'as'=>'booking_list_details_view',
+                'uses'=>'taskController\BookingListController@detailsViewForm'
+            ]);
+
         Route::get('booking/list/createIpo/{booking_id?}',
             [
                 'as'=>'booking_list_create_ipo',

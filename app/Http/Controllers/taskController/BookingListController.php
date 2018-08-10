@@ -216,4 +216,9 @@ class BookingListController extends Controller
 
             return view('maxim.mrf.mrf',compact('bookingDetails','MrfDetails','booking_order_id', 'suppliers'));
     }
+
+    public function detailsViewForm(Request $request)
+    {
+        return view('maxim.booking_list.booking_View_Details',['booking_id' => $request->bid]/*,compact('bookingList')*/);
+    }
 }

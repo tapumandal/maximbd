@@ -278,5 +278,6 @@ return [
 'mxp_menu_challan_list' => 'Challan List',
 'mxp_menu_purchase_order' => 'Generate Purchase Order',
 'mxp_menu_purchase_order_list' => 'Purchase Order List',
+'mxp_menu_booking_view_details' => 'Booking Details View',
 
 ];

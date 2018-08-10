@@ -120,7 +120,7 @@
 						<td width="12%">
 							<div class="btn-group">
 
-								<form action="{{ Route('booking_list_action_task') }}" target="_blank">
+								<form action="{{ Route('booking_list_details_view') }}"{{-- target="_blank"--}}>
 									<input type="hidden" name="bid" value="{{$value->booking_order_id}}">
 									<button class="btn btn-success b1">Views</button>				
 
@@ -131,14 +131,17 @@
 
 									<ul class="dropdown-menu">
 									    <li>
+									    	<a href="{{ Route('booking_list_action_task', $value->booking_order_id) }}" target="_blank">Report</a>
+									    </li>
+									    <li>
 									    	<a href="{{ Route('booking_list_create_ipo', $value->booking_order_id) }}">IPO</a>
 									    </li>
 									    <li>
 									    	<a href="{{ Route('booking_list_create_mrf', $value->booking_order_id) }}">MRF</a>
 									    </li>
-                      <li>
-                        <a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
-                      </li>
+										<li>
+											<a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
+										</li>
 									</ul>
 							  	</form>
 							</div>
