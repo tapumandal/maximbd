@@ -142,12 +142,19 @@
                         $finalAmnt += $totalAmnt;
                     ?>
                 @endforeach
-
                 <tr>
                     <td colspan="9"><b>Final Total</b></td>
                     <td><b>{{ $finalQnty }}</b></td>
                     <td><b>US$</b></td>
                     <td><b>${{ $finalAmnt }}</b></td>
+                </tr>
+                <?php
+                    $test = 1000025.05;
+                    $f = new \NumberFormatter( locale_get_default(), \NumberFormatter::SPELLOUT );
+                    $word = $f->format($finalAmnt);
+                ?>
+                <tr>
+                    <td colspan="12"><b>Dollar {{ $word }} only</b></td>
                 </tr>
                 <tr>
                     <td colspan="10" style="font-size: 85%;"><b>Quality Requirements</b></td>

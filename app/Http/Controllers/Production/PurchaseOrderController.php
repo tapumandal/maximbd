@@ -11,6 +11,7 @@ use DB;
 
 class PurchaseOrderController extends Controller
 {
+    const WaitngForGoodsMRF = "Waiting_for_Goods";
     public function index(Request $request)
     {
         $suppliers = Supplier::where('status', 1)
@@ -36,9 +37,9 @@ class PurchaseOrderController extends Controller
         $poUniqueId = $id . $date . "-" . $count;
 
         $query = 'SELECT mrf.booking_order_id, mrf.shipmentDate, group_concat(mrf.erp_code) as erp_code, 
-          group_concat(mrf.item_code) as item_code, group_concat(mrf.item_size) as item_size, 
+          group_concat(mrf.item_code) as item_code, group_concat(mrf.mrf_id) as mrf_id, group_concat(mrf.item_size) as item_size, 
           group_concat(mrf.matarial) as matarial, group_concat(mrf.item_price) as item_price, 
-          group_concat(mrf.gmts_color) as gmts_color, group_concat(mrf.item_quantity) as item_quantity, 
+          group_concat(mrf.gmts_color) as gmts_color, group_concat(mrf.mrf_quantity) as item_quantity, 
           group_concat(msp.supplier_price) as supplier_price, group_concat(mp.unit_price) as unit_price, 
           group_concat(mp.product_id) as product_id FROM mxp_MRF_table mrf LEFT JOIN mxp_product mp 
           ON(mrf.item_code = mp.product_code AND mrf.erp_code = mp.erp_code) LEFT JOIN 
@@ -84,23 +85,26 @@ class PurchaseOrderController extends Controller
     {
         $setPurchaseOrders = json_decode($request->data, true);
 
-        for($i = 1; $i < count($setPurchaseOrders); $i++)
-        {
+        for($i = 1; $i < count($setPurchaseOrders); $i++) {
             $po = new MxpPurchaseOrder();
 
-            $po->po_no = str_replace('$', '', $setPurchaseOrders[$i][0]);
-            $po->booking_order_id = str_replace('$', '', $setPurchaseOrders[$i][1]);
-            $po->shipment_date = str_replace('$', '', $setPurchaseOrders[$i][2]);
-            $po->erp_code = str_replace('$', '', $setPurchaseOrders[$i][3]);
-            $po->item_code = str_replace('$', '', $setPurchaseOrders[$i][4]);
-            $po->item_size = str_replace('$', '', $setPurchaseOrders[$i][5]);
-            $po->material = str_replace('$', '', $setPurchaseOrders[$i][6]);
-            $po->gmts_color = str_replace('$', '', $setPurchaseOrders[$i][7]);
+            $po->po_no = $setPurchaseOrders[$i][0];
+            $po->booking_order_id = $setPurchaseOrders[$i][1];
+            $po->shipment_date = $setPurchaseOrders[$i][2];
+            $po->erp_code = $setPurchaseOrders[$i][3];
+            $po->item_code = $setPurchaseOrders[$i][4];
+            $po->item_size = $setPurchaseOrders[$i][5];
+            $po->material = $setPurchaseOrders[$i][6];
+            $po->gmts_color = $setPurchaseOrders[$i][7];
             $po->unit = str_replace('$', '', $setPurchaseOrders[$i][8]);
-            $po->item_quantity = str_replace('$', '', $setPurchaseOrders[$i][9]);
+            $po->item_quantity = $setPurchaseOrders[$i][9];
             $po->unit_price = str_replace('$', '', $setPurchaseOrders[$i][10]);
             $po->total_amount = str_replace('$', '', $setPurchaseOrders[$i][11]);
             $po->save();
+
+            $mrf = MxpMrf::where('mrf_id', $setPurchaseOrders[$i][12])->first();
+            $mrf->mrf_status = self::WaitngForGoodsMRF;
+            $mrf->save();
         }
 
         return $setPurchaseOrders[1][0];
@@ -128,6 +132,8 @@ class PurchaseOrderController extends Controller
         $purchaseOrders[] = $getPurchaseOrders;
 
         $suplier = Supplier::find($datas[1]);
+
+
 
         return view('print_file.purchase_order.purchase_order_report', ['purchaseOrders' => $getPurchaseOrders, 'headerValue' => $headerValue, 'footerData' => $footerData, 'supplier'=> $suplier]);
     }
