@@ -572,7 +572,7 @@ $('.save_purcahe_order').on('click', function (ev) {
     var poDatajs = JSON.stringify(datas);
     var saveData = ajaxFunc("/save_purcahse_order/", "GET", "data="+poDatajs);
 
-    console.log(saveData.responseText);
+    // console.log(saveData.responseText);
 
     var getUrl = document.URL;
     var Supplier_id = $('#supplier_id').val();
