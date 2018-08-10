@@ -222,7 +222,7 @@ class BookingListController extends Controller
     {
 //        return $request->bid;
 
-        return MxpBooking::with('buyer_details', 'ipo', 'mrf')->where('booking_order_id', $request->bid)->get();
+//        return MxpBooking::with('buyer_details', 'ipo', 'mrf')->where('booking_order_id', $request->bid)->get();
 
 
         return view('maxim.booking_list.booking_View_Details',['booking_id' => $request->bid]/*,compact('bookingList')*/);
