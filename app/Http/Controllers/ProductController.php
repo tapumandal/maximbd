@@ -184,6 +184,7 @@ class ProductController extends Controller
     	$createProduct->product_description = $request->p_description;
     	$createProduct->brand = $request->p_brand;
     	$createProduct->erp_code = $request->p_erp_code;
+    	$createProduct->item_inc_percentage = $request->item_inc_percentage;
     	$createProduct->unit_price = $request->p_unit_price;
     	$createProduct->weight_qty = $request->p_weight_qty;
     	$createProduct->weight_amt = $request->p_weight_amt;
