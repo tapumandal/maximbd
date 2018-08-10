@@ -16,31 +16,39 @@
 	<div>
 		<form id="mrf_advance_search_form"  style="display: none" method="post">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-			<div class="col-sm-2">
-				<label class="col-sm-12 label-control">Booking Id</label>
-				<input type="text" name="booking_id_search" class="form-control" placeholder="Booking Id search" id="booking_id_search">
+			<div class="row">
+				<div class="col-sm-3">
+					<label class="col-sm-12 label-control">Create date from</label>
+					<input type="date" name="from_create_date_search" class="form-control" id="from_create_date_search">
+				</div>
+				<div class="col-sm-3">
+					<label class="col-sm-12 label-control">Create date to</label>
+					<input type="date" name="to_create_date_search" class="form-control" id="to_create_date_search">
+				</div>
+				<div class="col-sm-3">
+					<label class="col-sm-12 label-control">Shipment date from</label>
+					<input type="date" name="from_shipment_date_search" class="form-control" id="from_shipment_date_search">
+				</div>
+				<div class="col-sm-3">
+					<label class="col-sm-12 label-control">Shipment date to</label>
+					<input type="date" name="to_shipment_date_search" class="form-control" id="to_shipment_date_search">
+				</div>
 			</div>
-			<div class="col-sm-10">
-				<div class="col-sm-10">
-					<div class="col-sm-3">
-						<label class="col-sm-12 label-control">Create date from</label>
-						<input type="date" name="from_create_date_search" class="form-control" id="from_create_date_search">
-					</div>
-					<div class="col-sm-3">
-						<label class="col-sm-12 label-control">Create date to</label>
-						<input type="date" name="to_create_date_search" class="form-control" id="to_create_date_search">
-					</div>
-					<div class="col-sm-3">
-						<label class="col-sm-12 label-control">Shipment date from</label>
-						<input type="date" name="from_shipment_date_search" class="form-control" id="from_shipment_date_search">
-					</div>
-					<div class="col-sm-3">
-						<label class="col-sm-12 label-control">Shipment date to</label>
-						<input type="date" name="to_shipment_date_search" class="form-control" id="to_shipment_date_search">
-					</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<label class="col-sm-12 label-control">Booking Id</label>
+					<input type="text" name="booking_id_search" class="form-control" placeholder="Booking Id search" id="booking_id_search">
+				</div>
+				<div class="col-sm-4">
+					<label class="col-sm-12 label-control">Mrf Status</label>
+					<select class="form-control selections" name="mrf_status" id="mrf_status">
+						<option value="Open">Open</option>
+						<option value="Waiting_for_Goods">Waiting for Goods</option>
+						<option value="Delivered">Delivered</option>
+					</select>
 				</div>
 				<br>
-				<div class="col-sm-2">
+				<div class="col-sm-4">
 					<input class="btn btn-info" type="submit" value="Search" name="mrf_advanceSearch_btn" id="mrf_advanceSearch_btn">
 				</div>
 			</div>
