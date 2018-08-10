@@ -174,6 +174,24 @@ trans('others.update_product_label'))
                                         </div>
                                     </div>
 
+                                    {{--<div class="form-group">--}}
+                                        {{--<label class="col-md-4 control-label">{{ trans('others.product_type_label') }}</label>--}}
+                                        {{--<div class="col-sm-6">--}}
+                                            {{--<div class="select">--}}
+                                                {{--<select class="form-control" type="select" name="product_type" >--}}
+                                                    {{--@if($data->product_type == 'MRF')--}}
+                                                        {{--<option  value="MRF" >MRF</option>--}}
+                                                        {{--<option value="IPO" >IPO</option>--}}
+                                                    {{--@else--}}
+                                                        {{--<option value="IPO" >IPO</option>--}}
+                                                        {{--<option  value="MRF" >MRF</option>--}}
+                                                    {{--@endif--}}
+
+                                                {{--</select>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">{{ trans('others.product_type_label') }}</label>
                                         <div class="col-sm-6">
@@ -186,9 +204,15 @@ trans('others.update_product_label'))
                                                         <option value="IPO" >IPO</option>
                                                         <option  value="MRF" >MRF</option>
                                                     @endif
-
                                                 </select>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ipo_increase_percentage" style="display: none;">
+                                        <label class="col-md-4 control-label">{{ trans('others.ipo_increase_percentage') }}</label>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" name="item_inc_percentage" value="{{ $data->item_inc_percentage }}">
                                         </div>
                                     </div>
 

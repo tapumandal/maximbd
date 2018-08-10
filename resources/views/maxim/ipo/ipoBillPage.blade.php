@@ -10,7 +10,7 @@
 	@foreach($buyerDetails as $details)
 		<div class="row header-top-a">
 			<div class="col-md-2 col-sm-2">
-				
+
 			</div>
 			<div class="col-md-8 col-sm-8 buyerName">
 				<h2 align="center">{{$details->buyer_name}}</h2>
@@ -35,7 +35,7 @@
 				</ul>
 			@endforeach
 		</div>
-		
+
 		<div class="col-md-6 col-sm-6 col-xs-5 valueGenarate">
 			@php ($i=0)
 			@foreach ($sentBillId as $billdata)
@@ -58,7 +58,7 @@
 				</table>
 			@endfor
 			@endforeach
-			
+
 		</div>
 	</div>
 <table class="table table-bordered mainBody">
@@ -76,7 +76,7 @@
             <th width="10%">Confirmation Date</th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
     	<?php
     		$j = 1;
     		$totalAllQty = 0;
@@ -99,7 +99,7 @@
     				$k = 0;
     				$totalQty =0;
     				$totalIncrQty = 0;
-    				$itemsize = explode(',', $item->item_size);  				
+    				$itemsize = explode(',', $item->item_size);
     				$qty = explode(',', $item->item_quantity);
                     $itemQuaInc = explode(',', $item->initial_increase);
 
@@ -107,22 +107,22 @@
     				foreach ($itemsize as $itemlengths) {
     					$itemlength = sizeof($itemlengths);
     				}
-    				$itemQtyValue = array_combine($itemsize, $qty);		
+    				$itemQtyValue = array_combine($itemsize, $qty);
     			?>
-    			
-    			
+
+
 	    			<tr>
 	    				<td>{{$j++}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->poCatNo}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->item_code}}</td>
-	    				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>			    		
+	    				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>
 			    			@if ($itemlength >= 1 )
-				    			<td colspan="2" class="colspan-td">  				
+				    			<td colspan="2" class="colspan-td">
 				    				<table >
 				    					@foreach ($itemQtyValue as $size => $Qty)
-				    					<?php 
+				    					<?php
 				    						$i++;
-				    						$totalQty += $Qty; 
+				    						$totalQty += $Qty;
 				    					?>
 				    					<tr>
 				    						<td width="50%">{{$size}}</td>
@@ -142,7 +142,7 @@
 				    			<div class="middel-table">
 				    				<table>
 				    					@foreach ($itemQtyValue as $size => $Qty)
-				    					<?php 
+				    					<?php
 				    						$k++;
 				    						$totalIncrQty += ceil(($Qty*$itemQuaInc[$k-1])/100 + $Qty);
 				    					?>
@@ -157,10 +157,10 @@
 				    					</tr>
 				    					@endif
 				    				</table>
-				    				</div> 				
+				    				</div>
 				    			</td>
-				    		@endif			    		   
-			    		<?php 
+				    		@endif
+			    		<?php
     						$totalAllQty += $totalQty;
     						$totalAllIncrQty += $totalIncrQty;
     					?>
@@ -171,7 +171,7 @@
     					<td></td>
 	    			</tr>
     		@endforeach
-    	
+
     	<tr>
 			<td colspan="5">
 				<div class="grandTotal" style="">
@@ -201,7 +201,7 @@
 		 		<h6>2. Please pack as the enclosed background and mark the styleNo. on the parcel or carton.</h6>
 		 	</td>
 		 </tr>
-    		
+
     	<tr>
 			<td colspan="3"><strong>PrintShop: </strong></td>
 			<td colspan="2"><strong>QC: </strong></td>

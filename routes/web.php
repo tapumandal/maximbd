@@ -66,15 +66,15 @@ Route::group(
         'uses'=>'taskController\MrfListController@getMrfListBySearch'
     ));
 
-    Route::any('/po_list_by_search/', array(
+    Route::post('/po_list_by_search/', array(
         'as'=>'po_list_by_search',
         'uses'=>'Production\PurchaseOrderController@getPOListBySearch'
     ));
 
-    Route::get('/save_purcahse_order/', array(
-        'as'=>'save_purcahse_order',
-        'uses'=>'Production\PurchaseOrderController@savePurchaseOrder'
-    ));
+//    Route::get('/save_purcahse_order/', array(
+//        'as'=>'save_purcahse_order',
+//        'uses'=>'Production\PurchaseOrderController@savePurchaseOrder'
+//    ));
 
     // Route::get('/create_urgent_client', array(
     // 	'as' => 'add_urgent_client',
