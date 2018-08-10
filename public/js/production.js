@@ -134,14 +134,36 @@ function addRow(results, start)
             '</td><td>'+rows[i].booking_order_id+
             '</td><td>'+rows[i].created_at+
             '</td><td>'+
-            '</td><td>'+
-            '</td><td><a href="./createIpo/'+rows[i].booking_order_id+
-            '" class="btn btn-info">IPO</a><a href="./createMrf/'+rows[i].booking_order_id+
-            '" class="btn btn-warning">MRF</a><form action="./view/" target="_blank"><input type="hidden" name="bid" value="'+ rows[i].booking_order_id+
-            '"><button class="btn btn-success">View</button></form></td></tr>');
+            '</td><td>'+rows[i].booking_status+
+            '</td><td>' +
+                '<form action="./view/"  target="_blank">' +
+                    '<input type="hidden" name="bid" value="'+ rows[i].booking_order_id+'">' +
+                    '<button class="btn btn-success b1">Report</button>' +
+                '</form>' +
+                '<button type="button" class="btn btn-success dropdown-toggle b2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                    '<span class="caret"></span>' +
+                    '<span class="sr-only">Toggle Dropdown</span>' +
+                '</button>' +
+                '<ul class="dropdown-menu">' +
+                    '<li>' +
+                        '<a href="./detailsView/'+ rows[i].booking_order_id +'">Views</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./createIpo/' + rows[i].booking_order_id +'">IPO</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./createMrf/' + rows[i].booking_order_id +'">MRF</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./download/file/'+rows[i].booking_order_id+'" class="btn btn-info">Download Files</a>' +
+                    '</li>' +
+                '</ul>' +
+            '</td></tr>');
         sl++;
     }
-
+// <a href="./createIpo/'+rows[i].booking_order_id+
+//     '" class="btn btn-info">IPO</a><a href="./createMrf/'+rows[i].booking_order_id+
+//     '" class="btn btn-warning">MRF</a>
     setPagination(results, position);
 
     $('.pagination li').on('click',(function () {
@@ -550,7 +572,7 @@ $('.save_purcahe_order').on('click', function (ev) {
     var poDatajs = JSON.stringify(datas);
     var saveData = ajaxFunc("/save_purcahse_order/", "GET", "data="+poDatajs);
 
-    console.log(saveData.responseText);
+    // console.log(saveData.responseText);
 
     var getUrl = document.URL;
     var Supplier_id = $('#supplier_id').val();
