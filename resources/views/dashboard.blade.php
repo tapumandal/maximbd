@@ -69,7 +69,7 @@ if (isset($taskAccessList) && !empty($taskAccessList)) {
                             <?php if (isset($taskAccessList) && !empty($taskAccessList)) {
 	?>
 
-                            <div class="form-group buyerChange">
+                            <div class="form-group buyerChange hidden">
                                 <label class="col-md-4 control-label">
                                     <span class="pull-right">Buyer Name</span>
                                 </label>
@@ -126,12 +126,12 @@ $buyerName = [];
                                 </div>
                             </div>
 
-                            <div class="form-group orderId">
+                            <div class="form-group orderId hidden">
                                 <label class="col-md-4 control-label">
                                     <span class="pull-right">Order Id</span>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="text" name="bookingId" class="form-control" disabled="true" id="bookingId" placeholder="Booking Id">
+                                    <input type="text" name="bookingId" class="form-control bookingId" disabled="true" id="bookingId" placeholder="Booking Id">
                                     {{--<input type="hidden" class="form-control" id="hiddenBookingIdList" >--}}
                                     <div id="bookingIdList"></div>
                                 </div>
