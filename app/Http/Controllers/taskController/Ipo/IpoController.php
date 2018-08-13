@@ -1,27 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\taskController;
+namespace App\Http\Controllers\taskController\Ipo;
 
-use App\Http\Controllers\dataget\ListGetController;
+use App\Http\Controllers\Message\ActionMessage;
 use App\Http\Controllers\Message\StatusMessage;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RoleManagement;
-use Illuminate\Http\Request;
 use App\Model\MxpBookingChallan;
-use App\Model\MxpMrf;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\MxpIpo;
 use Validator;
 use Auth;
 use DB;
 
-class MrfController extends Controller
+class IpoController extends Controller
 {
-  const CREATE_MRF = "create";
-  const UPDATE_MRF = "update";
-  const OPEN_MRF = "Open";
+  public function ipoReportView(Request $request){
+    $headerValue = DB::table("mxp_header")->where('header_type',11)->get();
+    $buyerDetails = DB::table("mxp_bookingBuyer_details")->where('booking_order_id',$request->bid)->get();
+    $footerData =[];
+    $ipoDetails = DB::table("mxp_ipo")->where([['ipo_id', $request->ipoid],['booking_order_id',$request->bid]])->get();
+    return view('maxim.ipo.ipoBillPage', [
+        'headerValue'  => $headerValue,
+        'initIncrease' => $request->ipoIncrease,
+        'buyerDetails' => $buyerDetails,
+        'sentBillId'   => $ipoDetails,
+        'footerData'   => $footerData
+      ]
+    );
+  }
 
-	function array_combine_($keys, $values)
-	{
+	function array_combine_($keys, $values){
 	    $result = array();
 	    foreach ($keys as $i => $k) {
 	        $result[$k][] = isset($values[$i]) ? $values[$i] : 0;
@@ -29,12 +38,14 @@ class MrfController extends Controller
 	    array_walk($result, create_function('&$v', '$v = (count($v) == 1)? array_pop($v): $v;'));
 	    return  $result;
 	}
-    public function addMrf(Request $request){
 
-      $datas = $request->all();
-      $booking_order_id = $request->booking_order_id;
-      $allId = $datas['allId'];
-      $product_qty = $datas['product_qty'];
+    public function storeIpo(Request $request){
+
+		$datas = $request->all();
+    $booking_order_id = $request->booking_order_id;
+    $allId = $datas['ipo_id'];
+    $product_qty = $datas['product_qty'];
+    $ipoIncrease = $datas['ipo_increase_percentage'];
 
        /**
       - This Array most important to create challan
@@ -54,13 +65,13 @@ class MrfController extends Controller
       - If empty all value then redirect create challan page.
       **/
 
-      $length = sizeof($product_qty);
-      $count = 0;
-      foreach ($product_qty as $value) {
-        if($value == 0 || $value < 0 ){
-          $count++;
+        $length = sizeof($product_qty);
+        $count = 0;
+        foreach ($product_qty as $value) {
+			if($value == 0 || $value < 0 ){
+				$count++;
+			}
         }
-      }
 
       if($count == $length){
         StatusMessage::create('erro_challan', 'Ops! Challan has been complte ');
@@ -72,21 +83,21 @@ class MrfController extends Controller
       - This Section create to concat all Get input
       - value by item id and store $tempValue Array.
       **/
-
-      $temp = $this->array_combine_ ($allId ,$product_qty);
+		
+		$temp = $this->array_combine_ ($allId ,$product_qty);
 
 
       /**
       - This Section add new MRF qty + DB MRF qty.
       **/
 
-      $mrfQuantityDb = [];
-      foreach ($temp as $key => $value) {
-        $getMrfDbvalue = DB::select(" select mrf_quantity from mxp_booking_challan where id ='".$key."'");
-        foreach ($getMrfDbvalue as $Mrfvalue) {
-          $mrfQuantityDb[$key] = explode(',', $Mrfvalue->mrf_quantity);
+        $mrfQuantityDb = [];
+        foreach ($temp as $key => $value) {
+        	$getMrfDbvalue = DB::select(" select ipo_quantity from mxp_booking_challan where id ='".$key."'");
+        	foreach ($getMrfDbvalue as $Mrfvalue) {
+          		$mrfQuantityDb[$key] = explode(',', $Mrfvalue->ipo_quantity);
+        	}
         }
-      }
       // self::print_me($mrfQuantityDb);
        $mrfInputValues = [];
         foreach ($temp as $key => $tempsValue) {
@@ -173,8 +184,6 @@ class MrfController extends Controller
             $mainData[$key] = $value;
           }
         }
-      // $one_uniq = array_unique($allId);
-      // $mainData = array_combine($one_uniq, $tempValue);
 
 
 
@@ -218,7 +227,7 @@ class MrfController extends Controller
 
       $makeOneArray = [];
       foreach ($tempValue as $key => $value) {
-        $makeOneArray[$key]['mrf_quantity'] = $value;
+        $makeOneArray[$key]['ipo_quantity'] = $value;
       }
       foreach ($tempValues as $key => $value) {
         $makeOneArray[$key]['left_mrf_ipo_quantity'] = $value;
@@ -228,48 +237,72 @@ class MrfController extends Controller
       foreach ($makeOneArray as $key => $minusValues) {
         $challanMinusValueInsert = MxpBookingChallan::find($key);
         $challanMinusValueInsert->left_mrf_ipo_quantity = $minusValues['left_mrf_ipo_quantity'];
-        $challanMinusValueInsert->mrf_quantity = $minusValues['mrf_quantity'];
+        $challanMinusValueInsert->ipo_quantity = $minusValues['ipo_quantity'];
         $challanMinusValueInsert->update();
       }
 
-      $cc = MxpMrf::count();
+      $cc = MxpIpo::count();
       $count = str_pad($cc + 1, 4, 0, STR_PAD_LEFT);
-      $id = "MRF"."-";
+      $id = "IPO"."-";
       $date = date('dmY') ;
-      $mrf_id = $id.$date."-".$count;
+      $ipo_id = $id.$date."-".$count;
+
+      $mainData = $this->increaseIpoValue($allId, $ipoIncrease,$mainData);
 
       foreach ($mainData as $key => $value) {
+      // $this->print_me($value);
         $getBookingChallanValue = DB::table("mxp_booking_challan")->where('id',$key)->get();
         foreach ($getBookingChallanValue as $bookingChallanValue) {
-            $insertMrfValue = new MxpMrf();
-            $insertMrfValue->user_id = Auth::user()->user_id;
-            $insertMrfValue->mrf_id = $mrf_id;
-            $insertMrfValue->supplier_id= $request->supplier_id;
-            $insertMrfValue->booking_order_id = $bookingChallanValue->booking_order_id;
-            $insertMrfValue->mrf_person_name = $request->mrf_person_name;
-            $insertMrfValue->erp_code = $bookingChallanValue->erp_code;
-            $insertMrfValue->item_code = $bookingChallanValue->item_code;
-            $insertMrfValue->item_size = $bookingChallanValue->item_size;
-            $insertMrfValue->item_quantity = $bookingChallanValue->left_mrf_ipo_quantity;
-            $insertMrfValue->mrf_quantity = $value;
-            $insertMrfValue->item_price = $bookingChallanValue->item_price;
-            $insertMrfValue->matarial = $bookingChallanValue->matarial;
-            $insertMrfValue->gmts_color = $bookingChallanValue->gmts_color;
-            $insertMrfValue->orderDate = $bookingChallanValue->orderDate;
-            $insertMrfValue->orderNo = $bookingChallanValue->orderNo;
-            $insertMrfValue->shipmentDate = $request->mrf_shipment_date;
-            $insertMrfValue->poCatNo = $bookingChallanValue->poCatNo;
-            // $insertMrfValue->status = $bookingChallanValue->status;
-            $insertMrfValue->action = self::CREATE_MRF;
-            $insertMrfValue->mrf_status = self::OPEN_MRF;
-            $insertMrfValue->save();
+            $createIpo                   = new MxpIpo();
+            $createIpo->user_id          = Auth::user()->user_id;
+      			$createIpo->ipo_id           = $ipo_id;
+            $createIpo->booking_order_id = $bookingChallanValue->booking_order_id;
+            $createIpo->erp_code         = $bookingChallanValue->erp_code;
+            $createIpo->item_code        = $bookingChallanValue->item_code;
+            $createIpo->item_size        = $bookingChallanValue->item_size;
+            $createIpo->item_description = $bookingChallanValue->item_description;
+            $createIpo->item_quantity    = $value['item_quantity'];
+            $createIpo->initial_increase = $value['increaseValue'];
+      			$createIpo->item_price       = $bookingChallanValue->item_price;
+      			$createIpo->matarial         = $bookingChallanValue->matarial;
+      			$createIpo->gmts_color       = $bookingChallanValue->gmts_color;
+      			$createIpo->others_color     = $bookingChallanValue->others_color;
+      			$createIpo->orderDate        = $bookingChallanValue->orderDate;
+      			$createIpo->orderNo          = $bookingChallanValue->orderNo;
+      			$createIpo->shipmentDate     = $bookingChallanValue->shipmentDate;
+            $createIpo->poCatNo          = $bookingChallanValue->poCatNo;
+      			$createIpo->sku              = $bookingChallanValue->sku;
+      			$createIpo->status           = ActionMessage::CREATE;
+      			$createIpo->save();
         }
       }
+
       $headerValue = DB::table("mxp_header")->where('header_type',11)->get();
       $buyerDetails = DB::table("mxp_bookingBuyer_details")->where('booking_order_id',$booking_order_id)->get();
       $footerData =[];
-      $mrfDeatils = DB::table('mxp_MRF_table')->where('mrf_id',$mrf_id)->get();
+      $ipoDetails = DB::table("mxp_ipo")->where('ipo_id', $ipo_id)->get();
 
-      return view('maxim.mrf.mrfReportFile',compact('mrfDeatils','headerValue','buyerDetails','footerData'));
+      return view('maxim.ipo.ipoBillPage', [
+          'headerValue'  => $headerValue,
+          'initIncrease' => $request->ipoIncrease,
+          'buyerDetails' => $buyerDetails,
+          'sentBillId'   => $ipoDetails,
+          'footerData'   => $footerData
+        ]
+      );
     }
+
+
+    public function increaseIpoValue(array $ipo_id = [], array $increase = [], array $maindata = null){
+      $ipoAndIncreaseValue = [];
+      $temp = $this->array_combine_ ($ipo_id ,$increase);
+      foreach ($temp as $key => $values) {
+        $ipoAndIncreaseValue[$key]['increaseValue']= implode(',', $values);
+      }
+      foreach ($maindata as $keys => $valuess) {
+        $ipoAndIncreaseValue[$keys]['item_quantity']= $valuess;
+      }
+      return $ipoAndIncreaseValue;
+    }
+
 }

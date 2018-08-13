@@ -911,6 +911,19 @@ Route::group(['middleware' => 'auth'], function () {
                 'uses'=>'taskController\MrfListController@showMrfReport'
             ]);
 
+        /** there are all IPO routes here **/
+
+        Route::post('task/ipo/action',
+            [
+                'as'=>'task_ipo_action',
+                'uses'=>'taskController\Ipo\IpoController@storeIpo'
+            ]);
+        Route::get('ipo/report/view',
+            [
+                'as'=>'ipo_list_action_task',
+                'uses'=>'taskController\Ipo\IpoController@ipoReportView'
+            ]);
+
         /** there are all task routes here **/
         Route::any('/get/buyer/company',
             [

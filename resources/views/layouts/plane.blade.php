@@ -11,17 +11,18 @@
 	<meta content="width=device-width, initial-scale=1" name="viewport"/>
 	<meta content="" name="description"/>
 	<meta content="" name="author"/>
-	<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}" />
+	<link rel="stylesheet" href="{{ asset('assets/stylesheets/styles.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/stylesheets/main.css') }}" />
 
 		{{-- for select2 --}}
 
-	<link href="{{ asset("assets/customByMxp/css/select2.min.css") }}" rel="stylesheet" />
-	<link rel="stylesheet" href="{{ asset("assets/stylesheets/preloder.css") }}" />
-	<link rel="stylesheet" href="{{ asset("assets/scripts/easy-autocomplete.min.css") }}" />
-	<link rel="stylesheet" href="{{ asset("assets/scripts/easy-autocomplete.themes.min.css") }}" />
-	<link rel="stylesheet" href="{{ asset("assets/scripts/bootstrap-datetimepicker.min.css") }}" />
-	<script src="{{ asset("assets/scripts/jquery-3.3.1.min.js") }}"></script>
-	<script src="{{ asset("assets/customByMxp/js/select2.min.js") }}"></script>
+	<link href="{{ asset('assets/customByMxp/css/select2.min.css') }}" rel="stylesheet" />
+	<link rel="stylesheet" href="{{ asset('assets/stylesheets/preloder.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/scripts/easy-autocomplete.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/scripts/easy-autocomplete.themes.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/scripts/bootstrap-datetimepicker.min.css') }}" />
+	<script src="{{ asset('assets/scripts/jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ asset('assets/customByMxp/js/select2.min.js') }}"></script>
 
 </head>
 <body>
