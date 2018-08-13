@@ -53,7 +53,7 @@
 				@foreach($challanDetails as $value)
 					<tr id="challan_list_table">
 						<td>{{$j++}}</td>
-						<td>{{$value->checking_id}}</td>
+						<td>{{$value->checking_ids_of_challan}}</td>
 						<td>{{$value->challan_id}}</td>
 						<td>{{Carbon\Carbon::parse($value->created_at)}}</td>
 						<td>
