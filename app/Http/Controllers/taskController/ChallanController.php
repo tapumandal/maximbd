@@ -319,6 +319,8 @@ class ChallanController extends Controller
 
         $allBookingId = [];
 
+//        $this->print_me($mainData);
+
         foreach ($mainData as $key => $value) {
             $findChallan = DB::select(" select * from mxp_booking_challan where id ='".$key."'");
             //		 self::print_me($findChallan);
@@ -328,14 +330,15 @@ class ChallanController extends Controller
                 $insertMultipleChallan->user_id = Auth::user()->user_id;
 
                 $insertMultipleChallan->challan_id = $MultipleChallanUniqueID;
-                $insertMultipleChallan->checking_id = $checkingOrders;
-//              $insertMultipleChallan->checking_id = $challanValue->booking_order_id;
+                $insertMultipleChallan->checking_ids_of_challan = $checkingOrders;
+                $insertMultipleChallan->checking_id = $challanValue->booking_order_id;
 
                 // $insertMultipleChallan->bill_id = $challanValue->bill_id;
                 $insertMultipleChallan->erp_code = $challanValue->erp_code;
                 $insertMultipleChallan->item_code = $challanValue->item_code;
                 // $insertMultipleChallan->oss = $challanValue->oss;
                 // $insertMultipleChallan->style = $challanValue->style;
+                $insertMultipleChallan->gmts_color = $challanValue->gmts_color;
                 $insertMultipleChallan->item_size = $challanValue->item_size;
                 $insertMultipleChallan->quantity = $value;
                 // $insertMultipleChallan->unit_price = $challanValue->unit_price;
