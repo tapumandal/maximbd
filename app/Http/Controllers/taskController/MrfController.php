@@ -18,6 +18,7 @@ class MrfController extends Controller
 {
   const CREATE_MRF = "create";
   const UPDATE_MRF = "update";
+  const OPEN_MRF = "Open";
 
 	function array_combine_($keys, $values)
 	{
@@ -260,6 +261,7 @@ class MrfController extends Controller
             $insertMrfValue->poCatNo = $bookingChallanValue->poCatNo;
             // $insertMrfValue->status = $bookingChallanValue->status;
             $insertMrfValue->action = self::CREATE_MRF;
+            $insertMrfValue->mrf_status = self::OPEN_MRF;
             $insertMrfValue->save();
         }
       }

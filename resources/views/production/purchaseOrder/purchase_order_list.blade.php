@@ -11,6 +11,7 @@
                     <div class="col-sm-3">
                         <label class="col-sm-12 label-control">Supplier</label>
                         <select class="form-control selections" name="supplier_id" id="supplier_id">
+                            <option value="">Select Supplier</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{$supplier->supplier_id}}">{{$supplier->name}}</option>
                             @endforeach
@@ -69,6 +70,7 @@
                     <th>Quantity</th>
                     <th>Unit Price($)</th>
                     <th>Total Amount($)</th>
+                    <th class="hidden">Mrf Id</th>
                     </thead>
                 </tr>
                 @php($j=1)

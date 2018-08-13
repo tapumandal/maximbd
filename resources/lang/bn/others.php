@@ -278,5 +278,6 @@ return [
 'mxp_menu_challan_list' => 'Challan List',
 'mxp_menu_purchase_order' => 'ক্রয় অর্ডার তৈরি করুন',
 'mxp_menu_purchase_order_list' => 'অর্ডার তালিকা ক্রয়',
+'mxp_menu_booking_view_details' => 'বুকিং বিশদ দেখুন',
 
 ];

@@ -204,6 +204,13 @@ trans('others.add_product_label'))
 										</div>
 									</div>
 
+									<div class="form-group ipo_increase_percentage" style="display: none;">
+										<label class="col-md-4 control-label">{{ trans('others.ipo_increase_percentage') }}</label>
+										<div class="col-md-6">
+											<input type="text" class="form-control" name="item_inc_percentage" value="{{old('item_inc_percentage')}}" placeholder="Increase Percentage">
+										</div>
+									</div>
+
 		                            <div class="form-group">
 		                            	<label class="col-md-4 control-label">{{ trans('others.add_product_status') }}</label>
 		                                <div class="col-sm-6">

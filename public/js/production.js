@@ -134,14 +134,36 @@ function addRow(results, start)
             '</td><td>'+rows[i].booking_order_id+
             '</td><td>'+rows[i].created_at+
             '</td><td>'+
-            '</td><td>'+
-            '</td><td><a href="./createIpo/'+rows[i].booking_order_id+
-            '" class="btn btn-info">IPO</a><a href="./createMrf/'+rows[i].booking_order_id+
-            '" class="btn btn-warning">MRF</a><form action="./view/" target="_blank"><input type="hidden" name="bid" value="'+ rows[i].booking_order_id+
-            '"><button class="btn btn-success">View</button></form></td></tr>');
+            '</td><td>'+rows[i].booking_status+
+            '</td><td>' +
+                '<form action="./view/"  target="_blank">' +
+                    '<input type="hidden" name="bid" value="'+ rows[i].booking_order_id+'">' +
+                    '<button class="btn btn-success b1">Report</button>' +
+                '</form>' +
+                '<button type="button" class="btn btn-success dropdown-toggle b2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                    '<span class="caret"></span>' +
+                    '<span class="sr-only">Toggle Dropdown</span>' +
+                '</button>' +
+                '<ul class="dropdown-menu">' +
+                    '<li>' +
+                        '<a href="./detailsView/'+ rows[i].booking_order_id +'">Views</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./createIpo/' + rows[i].booking_order_id +'">IPO</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./createMrf/' + rows[i].booking_order_id +'">MRF</a>' +
+                    '</li>' +
+                    '<li>' +
+                        '<a href="./download/file/'+rows[i].booking_order_id+'" class="btn btn-info">Download Files</a>' +
+                    '</li>' +
+                '</ul>' +
+            '</td></tr>');
         sl++;
     }
-
+// <a href="./createIpo/'+rows[i].booking_order_id+
+//     '" class="btn btn-info">IPO</a><a href="./createMrf/'+rows[i].booking_order_id+
+//     '" class="btn btn-warning">MRF</a>
     setPagination(results, position);
 
     $('.pagination li').on('click',(function () {
@@ -439,6 +461,11 @@ function addRowInPOList(results/*, start*/)
         else
             var item_codes = [];
 
+        if(rows[i].mrf_id != null)
+            var mrf_ids = rows[i].mrf_id.split(',');
+        else
+            var mrf_ids = [];
+
         var spanLength = quantities.length;
 
         $('#po_list_tbody').append('<tr class="po_list_table"><td>'+sl+
@@ -453,6 +480,7 @@ function addRowInPOList(results/*, start*/)
             '</td><td class="quantities_'+i+'_0">'+((quantities[0])? quantities[0]:defaultNumber)+
             '</td><td class="unitPrice_'+i+'_0">$'+((unit_prices[0])? unit_prices[0]:defaultNumber)+
             '</td><td class="totalPrice_'+i+'_0">$'+((((quantities[0])? quantities[0]:defaultNumber)*((unit_prices[0]? unit_prices[0]:defaultNumber)))).toFixed(2)+
+            '</td><td class="hidden mrf_id_'+i+'_0">'+((mrf_ids[0])? mrf_ids[0]:defaultValue)+
             '</td></tr>');
         sl++;
 
@@ -476,6 +504,7 @@ function addRowInPOList(results/*, start*/)
                 '</td><td class="quantities_'+i+'_'+j+'">'+((quantities[j])? quantities[j]:defaultNumber)+
                 '</td><td class="unitPrice_'+i+'_'+j+'">$'+((unit_prices[j])? unit_prices[j]:defaultNumber)+
                 '</td><td class="totalPrice_'+i+'_'+j+'">$'+(qnt*amt).toFixed(2)+
+                '</td><td class="hidden mrf_id_'+i+'_'+j+'">'+((mrf_ids[j])? mrf_ids[j]:defaultValue)+
                 '</td></tr>');
             sl++;
         }
@@ -527,7 +556,8 @@ $('.save_purcahe_order').on('click', function (ev) {
                         $('.unit_'+it1+'_'+it2).html(),
                         $('.quantities_'+it1+'_'+it2).html(),
                         $('.unitPrice_'+it1+'_'+it2).html(),
-                        $('.totalPrice_'+it1+'_'+it2).html()]);
+                        $('.totalPrice_'+it1+'_'+it2).html(),
+                        $('.mrf_id_'+it1+'_'+it2).html()]);
                     it2++;
                 }
                 else
@@ -538,24 +568,15 @@ $('.save_purcahe_order').on('click', function (ev) {
         else
             break;
     }
+    // console.log(datas);
     var poDatajs = JSON.stringify(datas);
-    // $('.report_all_data').val(poDatajs);
     var saveData = ajaxFunc("/save_purcahse_order/", "GET", "data="+poDatajs);
 
     // console.log(saveData.responseText);
 
-    // alert(saveData.responseText);
     var getUrl = document.URL;
     var Supplier_id = $('#supplier_id').val();
     var data = po_no+','+Supplier_id;
     var setUrl = getUrl.replace("/list","/report?data="+data);
-    // // console.log(datas);
     window.location.assign(setUrl);
 });
-
-// $('#to_oder_date_search').on('click',function (ev) {
-//     // alert('clicked');
-//     // $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
-// });
-
-// $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});

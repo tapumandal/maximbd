@@ -66,7 +66,7 @@ Route::group(
         'uses'=>'taskController\MrfListController@getMrfListBySearch'
     ));
 
-    Route::any('/po_list_by_search/', array(
+    Route::post('/po_list_by_search/', array(
         'as'=>'po_list_by_search',
         'uses'=>'Production\PurchaseOrderController@getPOListBySearch'
     ));
@@ -969,6 +969,12 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'routeAccess'], function () {
+
+        Route::get('booking/list/detailsView/{booking_id?}',
+            [
+                'as'=>'booking_list_details_view',
+                'uses'=>'taskController\BookingListController@detailsViewForm'
+            ]);
 
         Route::get('booking/list/createIpo/{booking_id?}',
             [

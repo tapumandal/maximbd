@@ -54,6 +54,12 @@ class MrfListController extends Controller
             $checkValidation = true;
             $mrfList->where('booking_order_id','like','%'.$request->booking_id_search.'%');
         }
+
+        if($request->mrf_status != '')
+        {
+            $checkValidation = true;
+            $mrfList->where('mrf_status','like','%'.$request->mrf_status.'%');
+        }
         if($request->from_create_date_search != '' && $request->to_create_date_search != '')
         {
             $checkValidation = true;

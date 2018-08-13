@@ -7,6 +7,7 @@ use App\Http\Controllers\Message\StatusMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RoleManagement;
 use App\Model\BookingFile;
+use App\Model\MxpBooking;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Supplier;
@@ -215,5 +216,15 @@ class BookingListController extends Controller
             $MrfDetails = DB::select("select * from mxp_MRF_table where booking_order_id = '".$request->booking_id."' GROUP BY mrf_id");
 
             return view('maxim.mrf.mrf',compact('bookingDetails','MrfDetails','booking_order_id', 'suppliers'));
+    }
+
+    public function detailsViewForm(Request $request)
+    {
+//        return $request->bid;
+
+//        return MxpBooking::with('buyer_details', 'ipo', 'mrf')->where('booking_order_id', $request->bid)->get();
+
+
+        return view('maxim.booking_list.booking_View_Details',['booking_id' => $request->bid]/*,compact('bookingList')*/);
     }
 }

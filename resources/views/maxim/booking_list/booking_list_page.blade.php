@@ -122,7 +122,7 @@
 
 								<form action="{{ Route('booking_list_action_task') }}" target="_blank">
 									<input type="hidden" name="bid" value="{{$value->booking_order_id}}">
-									<button class="btn btn-success b1">Views</button>				
+									<button class="btn btn-success b1">Report</button>
 
 									<button type="button" class="btn btn-success dropdown-toggle b2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									    <span class="caret"></span>
@@ -131,14 +131,17 @@
 
 									<ul class="dropdown-menu">
 									    <li>
+									    	<a href="{{ Route('booking_list_details_view', $value->booking_order_id) }}">Views</a>
+									    </li>
+									    <li>
 									    	<a href="{{ Route('booking_list_create_ipo', $value->booking_order_id) }}">IPO</a>
 									    </li>
 									    <li>
 									    	<a href="{{ Route('booking_list_create_mrf', $value->booking_order_id) }}">MRF</a>
 									    </li>
-                      <li>
-                        <a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
-                      </li>
+										<li>
+											<a href="{{ Route('booking_files_download', $value->id) }}" class="btn btn-info">Download Files</a>
+										</li>
 									</ul>
 							  	</form>
 							</div>
