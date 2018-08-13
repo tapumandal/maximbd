@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('page_heading', trans("others.mxp_menu_booking_view_details") )
 @section('section')
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="col-sm-3" style="font-size: 120%">Booking Details</div>
@@ -9,17 +10,17 @@
         <div class="panel-body aaa">
             <div class="panel panel-default col-sm-7">
                 <br>
-                <p >Buyer name:<b> REGATA</b></p>
-                <p >Company name:<b> CSF GARMENTS (PVT.) LTD</b></p>
-                <p >Buyer address:<b> DELUXE HOUSE #3 (3rd-6th floor)</b></p>
-                <p >Mobile num:<b> +8801984464601</b></p>
+                <p >Buyer name:<b> {{ $bookingDetails->buyer_name }}</b></p>
+                <p >Company name:<b> {{ $bookingDetails->Company_name }}</b></p>
+                <p >Buyer address:<b> {{ $bookingDetails->address_part1_invoice }}{{ $bookingDetails->address_part2_invoice }}</p>
+                <p >Mobile num:<b> {{ $bookingDetails->mobile_invoice }}</b></p>
             </div>
             <div class="panel panel-default col-sm-5">
                 <br>
-                <p >Booking Id:<b> INVO-23062018-Mi-0001</b></p>
-                <p >Booking status:<b> booked</b></p>
-                <p >Oreder Date:<b> 2018-08-10 06:42:23</b></p>
-                <p >Shipment Date:<b> 2018-08-18</b></p>
+                <p >Booking Id:<b> {{ $bookingDetails->booking_order_id }}</b></p>
+                <p >Booking status:<b> {{ $bookingDetails->booking_status }}</b></p>
+                <p >Oreder Date:<b> {{ $bookingDetails->bookings[0]->orderDate }}</b></p>
+                <p >Shipment Date:<b> {{ $bookingDetails->bookings[0]->shipmentDate }}</b></p>
             </div>
             <table class="table table-bordered">
                 <tr>
@@ -28,31 +29,29 @@
                         <th>ERP code</th>
                         <th>Item Code</th>
                         <th>Item Size</th>
-                        <th>Color</th>
+                        <th>Item Color</th>
                         <th>Quantity</th>
                         <th>Price</th>
                     </thead>
                 </tr>
-                @php($j=1)
+                @php
+                    $j=1;
+                @endphp
                 <tbody>
+                @foreach($bookingDetails->bookings as $bookedItem)
                 <tr>
-                    <td> 1 </td>
-                    <td> 04-OST2LSLTA001X-01 </td>
-                    <td> 2L.SL-TA.001 </td>
-                    <td> EU L CN 175/96A </td>
-                    <td> DARK KHAKI </td>
-                    <td> 1000 </td>
-                    <td> $1.1 </td>
+                    <td> {{ $j }} </td>
+                    <td >
+                        {{ $bookedItem->erp_code }}
+                    </td>
+                    <td> {{ $bookedItem->item_code }} </td>
+                    <td> {{ $bookedItem->item_size }} </td>
+                    <td> {{ $bookedItem->gmts_color  }} </td>
+                    <td> {{ $bookedItem->item_quantity }} </td>
+                    <td> {{ $bookedItem->item_price }} </td>
                 </tr>
-                {{--@foreach($bookingList as $value)--}}
-                {{--<tr>--}}
-                {{--<td>{{$j++}}</td>--}}
-                {{--<td>{{$value->mrf_id}}</td>--}}
-                {{--<td>{{Carbon\Carbon::parse($value->created_at)}}</td>--}}
-                {{--<td>{{$value->shipmentDate}}</td>--}}
-                {{--<td>{{$value->mrf_status}}</td>--}}
-                {{--</tr>--}}
-                {{--@endforeach--}}
+                    @php($j++)
+                @endforeach
                 </tbody>
             </table>
         </div>

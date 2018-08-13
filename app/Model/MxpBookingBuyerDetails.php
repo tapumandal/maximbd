@@ -3,6 +3,10 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use  App\Model\MxpBookingBuyerDetails;
+use App\MxpIpo;
+use App\Model\MxpMrf;
+use App\Model\MxpBooking;
 
 class MxpBookingBuyerDetails extends Model
 {
@@ -26,4 +30,16 @@ class MxpBookingBuyerDetails extends Model
     			'mobile_delivery',
     			'telephone_delivery',
     			'fax_delivery'];
+
+    function bookings(){
+        return $this->hasMany(MxpBooking::class, 'booking_order_id','booking_order_id');
+    }
+
+    function ipo(){
+        return $this->hasMany(MxpIpo::class, 'booking_order_id','booking_order_id');
+    }
+
+    function mrf(){
+        return $this->hasMany(MxpMrf::class, 'booking_order_id','booking_order_id');
+    }
 }
