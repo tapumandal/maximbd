@@ -42,9 +42,10 @@ class IpoController extends Controller
     public function storeIpo(Request $request){
 
 		$datas = $request->all();
-		$booking_order_id = $request->booking_order_id;
-		$allId = $datas['ipo_id'];
-		$product_qty = $datas['product_qty'];
+    $booking_order_id = $request->booking_order_id;
+    $allId = $datas['ipo_id'];
+    $product_qty = $datas['product_qty'];
+    $ipoIncrease = $datas['ipo_increase_percentage'];
 
        /**
       - This Array most important to create challan
@@ -183,8 +184,6 @@ class IpoController extends Controller
             $mainData[$key] = $value;
           }
         }
-      // $one_uniq = array_unique($allId);
-      // $mainData = array_combine($one_uniq, $tempValue);
 
 
 
@@ -248,19 +247,22 @@ class IpoController extends Controller
       $date = date('dmY') ;
       $ipo_id = $id.$date."-".$count;
 
+      $mainData = $this->increaseIpoValue($allId, $ipoIncrease,$mainData);
+
       foreach ($mainData as $key => $value) {
+      // $this->print_me($value);
         $getBookingChallanValue = DB::table("mxp_booking_challan")->where('id',$key)->get();
         foreach ($getBookingChallanValue as $bookingChallanValue) {
             $createIpo                   = new MxpIpo();
             $createIpo->user_id          = Auth::user()->user_id;
       			$createIpo->ipo_id           = $ipo_id;
-          //$createIpo->initial_increase = $ipoIncrease;
-      			$createIpo->booking_order_id = $bookingChallanValue->booking_order_id;
-      			$createIpo->erp_code         = $bookingChallanValue->erp_code;
-      			$createIpo->item_code        = $bookingChallanValue->item_code;
+            $createIpo->booking_order_id = $bookingChallanValue->booking_order_id;
+            $createIpo->erp_code         = $bookingChallanValue->erp_code;
+            $createIpo->item_code        = $bookingChallanValue->item_code;
             $createIpo->item_size        = $bookingChallanValue->item_size;
-      			$createIpo->item_description = $bookingChallanValue->item_description;
-      			$createIpo->item_quantity    = $value;
+            $createIpo->item_description = $bookingChallanValue->item_description;
+            $createIpo->item_quantity    = $value['item_quantity'];
+            $createIpo->initial_increase = $value['increaseValue'];
       			$createIpo->item_price       = $bookingChallanValue->item_price;
       			$createIpo->matarial         = $bookingChallanValue->matarial;
       			$createIpo->gmts_color       = $bookingChallanValue->gmts_color;
@@ -288,6 +290,19 @@ class IpoController extends Controller
           'footerData'   => $footerData
         ]
       );
+    }
+
+
+    public function increaseIpoValue(array $ipo_id = [], array $increase = [], array $maindata = null){
+      $ipoAndIncreaseValue = [];
+      $temp = $this->array_combine_ ($ipo_id ,$increase);
+      foreach ($temp as $key => $values) {
+        $ipoAndIncreaseValue[$key]['increaseValue']= implode(',', $values);
+      }
+      foreach ($maindata as $keys => $valuess) {
+        $ipoAndIncreaseValue[$keys]['item_quantity']= $valuess;
+      }
+      return $ipoAndIncreaseValue;
     }
 
 }
