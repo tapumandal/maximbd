@@ -16,7 +16,6 @@ class AddFieldMxpBookingChallan extends Migration
         Schema::table('mxp_booking_challan', function (Blueprint $table) {
             $table->string('left_mrf_ipo_quantity')->after('item_quantity');
             $table->string('ipo_quantity')->after('mrf_quantity');
-            $table->string('sku')->after('mrf_quantity');
         });
     }
 
@@ -30,7 +29,6 @@ class AddFieldMxpBookingChallan extends Migration
         Schema::table('mxp_booking_challan', function (Blueprint $table) {
             $table->dropColumn('left_mrf_ipo_quantity');
             $table->dropColumn('ipo_quantity');
-            $table->dropColumn('sku');
         });
     }
 }

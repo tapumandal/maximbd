@@ -99,6 +99,7 @@
 						$itemlength = sizeof($itemlengths);
 					}
 					$itemQtyValue = array_combine($itemsize, $qty);
+
 				?>
     			<tr>
     				<td>{{$j++}}</td>
