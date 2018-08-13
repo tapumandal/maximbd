@@ -2,7 +2,7 @@
 @section('page_heading', trans("others.new_mrf_create_label"))
 @section('section')
 <style type="text/css">
-	.top-div{
+	/*.top-div{
 		background-color: #f9f9f9;
 		padding:5px 0px 5px 10px;
 		border-radius: 7px;
@@ -38,7 +38,7 @@
 		float: left;
 		width: 25%;
 	}
-	}
+	}*/
 </style>
 
     <div class="container-fluid">
@@ -127,6 +127,7 @@
 												<th width="4%">#</th>
 												<th width="">ERP Code</th>
 												<th width="">Item Code</th>
+												<th width="">Item Color</th>
 												<th width="">Item Size</th>
 												<th width="">Item Quantity</th>
 												<th>MRF QTY</th>
@@ -138,8 +139,9 @@
 										@foreach ($bookingDetails as $item)
 											<?php
 							    				$itemsize = explode(',', $item->item_size);
-							    				$qty = explode(',', $item->item_quantity);
+							    				$qty = explode(',', $item->left_mrf_ipo_quantity);
 							    				$mrf_quantity = explode(',', $item->mrf_quantity);
+							    				$gmts_color = explode(',', $item->gmts_color);
 							    				$itemQtyValue = array_combine($itemsize, $qty);
 							    			?>
 										<tbody>
@@ -149,6 +151,15 @@
 												</td>
 												<td><span>{{$item->erp_code}}</span></td>
 												<td><span>{{$item->item_code}}</span></td>
+												<td class="colspan-td">
+													<table id="sampleTbl">
+														@foreach($gmts_color as $colors)
+														<tr>
+															<td>{{$colors}}</td>
+														</tr>
+														@endforeach
+													</table>
+												</td>
 												<td colspan="2" class="colspan-td">
 								    				<table width="100%" id="sampleTbl">
 								    					@foreach ($itemQtyValue as $size => $Qty)
@@ -179,24 +190,20 @@
 								    			<td class="colspan-td">
 								    				<div class="middel-table">
 								    					<table>
-								    							@foreach($mrf_quantity as $mrf)
-								    						<tr>
+								    						@foreach($mrf_quantity as $mrf)
+								    							<tr>
 								    								<td width="30%">
 													    				<input type="text" class="form-control item_mrf" name="item_mrf[]" value="{{$mrf}}" disabled="true">
 													    			</td>
-								    						</tr>
-								    							@endforeach
+								    							</tr>
+								    						@endforeach
 								    					</table>
 								    				</div>
 								    			</td>
-
 											</tr>
-
 										</tbody>
 										@endforeach
 									</table>
-
-
 									<div class="form-group ">
 										<div class="col-md-6 col-md-offset-10">
 											<button type="submit" class="btn btn-primary" id="rbutton">
