@@ -84,7 +84,7 @@
 					<tr>
 						<td colspan="2">
 							<div style="text-align: right;">
-								<p style="padding-left :5px;">Booking order No :{{$billdata->checking_id}}  </p>
+								<p style="padding-left :5px;">Booking order No :{{$billdata->checking_ids_of_challan}}  </p>
 
 								<!-- {{Carbon\Carbon::parse($billdata->created_at)->format('dmY')}}: -->
 							</div>
@@ -109,14 +109,16 @@
     <thead>
         <tr>
         	<th width="5%">SI No</th>
+        	<th width="15%">Checking Id</th>
         	<th width="15%">Description</th>
-        	<th width="10%">Item code</th>
-        	<th width="10%">OSS</th>
-            <th width="10%">Style</th>
+        	<th width="15%">Item code</th>
+        	<th width="5%">OSS</th>
+            <th width="5%">Style</th>
             <th width="14%">Size</th>
+            <th width="14%">Color</th>
             <th width="6%">Quantity</th>
-            <th width="10%">Weight</th>
-            <th width="10%">Box</th>
+            <th width="5%">Weight</th>
+            <th width="5%">Box</th>
         </tr>
     </thead>
     <tbody>
@@ -133,8 +135,9 @@
 
     			<?php
     				$totalQty =0;
-    				$itemsize = explode(',', $item->item_size);  				
+    				$itemsize = explode(',', $item->item_size);
     				$qty = explode(',', $item->quantity);
+    				$clr = explode(',', $item->gmts_color);
     				$itemlength = 0;
     				foreach ($itemsize as $itemlengths) {
     					$itemlength = sizeof($itemlengths);
@@ -143,13 +146,14 @@
     			?>
 	    			<tr>
 	    				<td>{{$j++}}</td>
+	    				<td rowspan="{{$itemlength}}">{{$item->checking_id}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->item_code}}</td>
 	    				<td rowspan="{{$itemlength}}">{{$item->oss}}</td>
 			    		<td rowspan="{{$itemlength}}">{{$item->style}}</td>
 
 			    			@if ($itemlength >= 1 )
-				    			<td colspan="2" class="colspan-td">
+				    			<td colspan="3" class="colspan-td">
 				    				<table>
 				    					@foreach ($itemsize as $key=>$value)
 				    					<?php
@@ -157,15 +161,17 @@
 				    						$totalQty += $qty[$key];
 				    					?>
 				    					<tr>
-				    						<td width="70%">{{$value}}</td>
-							    			<td width="30%">{{$qty[$key]}}</td>
+				    						<td width="39%">{{$value}}</td>
+							    			<td width="42%">{{$clr[$key]}}</td>
+							    			<td width="19%">{{$qty[$key]}}</td>
 				    					</tr>
 				    					@endforeach
 
 				    					@if( $i > 1 )
 				    					<tr>
-				    						<td width="70%"></td>
-				    						<td width="30%">{{$totalQty}}</td>
+				    						<td width="40%"></td>
+				    						<td width="40%"></td>
+				    						<td width="20%">{{$totalQty}}</td>
 				    					</tr>
 				    					@endif
 				    				</table>
@@ -181,13 +187,13 @@
     		@endforeach
     	
     	<tr>
-			<td colspan="6"><div style="text-align: center; font-weight: bold;font-size: ;"><span>Total Qty </span></div></td>
+			<td colspan="8"><div style="text-align: center; font-weight: bold;font-size: ;"><span>Total Qty </span></div></td>
 			<td>{{$totalAllQty}}</td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
-			<td colspan="7"><div style="text-align: center;font-weight: bold;font-size: ;"><span> Total weight & Box : </span></div></td>
+			<td colspan="9"><div style="text-align: center;font-weight: bold;font-size: ;"><span> Total weight & Box : </span></div></td>
 			<td></td>
 			<td></td>
 		</tr>
