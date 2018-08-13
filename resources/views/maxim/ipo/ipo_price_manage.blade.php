@@ -1,9 +1,57 @@
 @extends('layouts.dashboard')
 @section('page_heading','')
 @section('section')
+<?php $increase = $ipoIncrease;?>
 
-<?php $increase = $initIncrease;?>
-<form action="{{ Route('task_action') }}" method="POST">
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+@if(Session::has('erro_challan'))
+    @include('widgets.alert', array('class'=>'danger', 'message'=> Session::get('erro_challan') ))
+@endif
+@if(sizeof($ipoListValue) >= 1)
+	<div class="panel showMrfList">
+		<div class="panel-heading">IPO list</div>
+		<div class="panel-body">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Booking Id</th>
+						<th>IPO Id</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@php($i=1)
+					@foreach($ipoListValue as $details)
+					<tr>
+						<td>{{$i++}}</td>
+						<td>{{$details->booking_order_id}}</td>
+						<td>{{$details->ipo_id}}</td>
+						<td>
+							<form action="{{Route('ipo_list_action_task') }}" role="form" target="_blank">
+								<input type="hidden" name="ipoid" value="{{$details->ipo_id}}">
+								<input type="hidden" name="bid" value="{{$details->booking_order_id}}">
+								<button class="btn btn-success" >View</button>
+							</form>
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div>
+@endif
+
+<!-- <form action="{{ Route('task_action') }}" method="POST"> -->
+<form action="{{ Route('task_ipo_action') }}" method="POST">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<table class="table table-bordered mainBody">
 	    <thead>
@@ -44,7 +92,7 @@
 					$totalQty = 0;
 					$totalIncrQty = 0;
 					$itemsize = explode(',', $item->item_size);
-					$qty = explode(',', $item->item_quantity);
+					$qty = explode(',', $item->left_mrf_ipo_quantity);
 					$itemlength = 0;
 
 					foreach ($itemsize as $itemlengths) {
@@ -67,6 +115,7 @@
 									?>
 			    					<tr>
 			    						<td width="50%">{{$size}}</td>
+			    						<input type="hidden" name="product_qty[]" value="{{$Qty}}">
 						    			<td width="50%">{{$Qty}}</td>
 			    					</tr>
 			    					@endforeach
@@ -74,7 +123,7 @@
 			    					@if( $i > 1 )
 			    					<tr>
 			    						<td></td>
-			    						<td width="100%">{{$i}}{{$totalQty}}</td>
+			    						<td width="100%">{{$totalQty}}</td>
 			    					</tr>
 			    					@endif
 			    				</table>
@@ -89,18 +138,12 @@
 										?>
 
 										<tr>
-
-											<input type="hidden" name="taskType" value="IPO">
-											<input type="hidden" name="ipo_increase" value="YES">
-
-											<?php
-
-											?>
-
-											<input type="hidden" name="ipo_id[]" value="{{$ipoIds[$ipoIdInc]}}" >
+											<!-- <input type="hidden" name="taskType" value="IPO"> -->
+											<!-- <input type="hidden" name="ipo_increase" value="YES"> -->
+											<input type="hidden" name="ipo_id[]" value="{{$item->id}}" >
 											<td width="100%">
 
-												<input type="text" name="ipo_increase_percentage[]" value="" placeholder="Percentage" class="form-control">
+												<input type="text" name="ipo_increase_percentage[]" value="{{$increase}}" placeholder="Percentage" class="form-control">
 
 											</td>
 
