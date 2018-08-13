@@ -180,10 +180,10 @@ class MrfController extends Controller
       /** This code only for mxp_booking_Challan Table update **/
 
       foreach($tempValue as $key => $value){
-        $findChallanUpdate = DB::select(" select item_quantity from mxp_booking_challan where id ='".$key."'");
+        $findChallanUpdate = DB::select(" select left_mrf_ipo_quantity from mxp_booking_challan where id ='".$key."'");
         
         foreach ($findChallanUpdate as $challanValues) {
-          $quantity[] = explode(',', $challanValues->item_quantity);
+          $quantity[] = explode(',', $challanValues->left_mrf_ipo_quantity);
         }
       }
 
@@ -220,13 +220,13 @@ class MrfController extends Controller
         $makeOneArray[$key]['mrf_quantity'] = $value;
       }
       foreach ($tempValues as $key => $value) {
-        $makeOneArray[$key]['item_quantity'] = $value;
+        $makeOneArray[$key]['left_mrf_ipo_quantity'] = $value;
       }
 
       /** Quantity and Mrf value Insert **/
       foreach ($makeOneArray as $key => $minusValues) {
         $challanMinusValueInsert = MxpBookingChallan::find($key);
-        $challanMinusValueInsert->item_quantity = $minusValues['item_quantity'];
+        $challanMinusValueInsert->left_mrf_ipo_quantity = $minusValues['left_mrf_ipo_quantity'];
         $challanMinusValueInsert->mrf_quantity = $minusValues['mrf_quantity'];
         $challanMinusValueInsert->update();
       }
@@ -249,7 +249,7 @@ class MrfController extends Controller
             $insertMrfValue->erp_code = $bookingChallanValue->erp_code;
             $insertMrfValue->item_code = $bookingChallanValue->item_code;
             $insertMrfValue->item_size = $bookingChallanValue->item_size;
-            $insertMrfValue->item_quantity = $bookingChallanValue->item_quantity;
+            $insertMrfValue->item_quantity = $bookingChallanValue->left_mrf_ipo_quantity;
             $insertMrfValue->mrf_quantity = $value;
             $insertMrfValue->item_price = $bookingChallanValue->item_price;
             $insertMrfValue->matarial = $bookingChallanValue->matarial;
