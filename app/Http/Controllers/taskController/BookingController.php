@@ -162,6 +162,7 @@ class BookingController extends Controller
         $insertBookingChallan->item_description  = $bookingValues->item_description;
         $insertBookingChallan->item_size         = $bookingValues->item_size;
         $insertBookingChallan->item_quantity     = $bookingValues->item_quantity;
+        $insertBookingChallan->left_mrf_ipo_quantity     = $bookingValues->item_quantity;
         $insertBookingChallan->item_price        = $bookingValues->item_price;
         $insertBookingChallan->orderDate         = $bookingValues->orderDate;
         $insertBookingChallan->orderNo           = $bookingValues->orderNo;
