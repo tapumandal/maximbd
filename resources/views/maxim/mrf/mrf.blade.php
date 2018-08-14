@@ -153,7 +153,6 @@
 												<td><span>{{$item->erp_code}}</span></td>
 												<td><span>{{$item->item_code}}</span></td>
 												<td class="colspan-td" colspan="4">
-
 													<table id="sampleTbl">
 														<tbody>
 

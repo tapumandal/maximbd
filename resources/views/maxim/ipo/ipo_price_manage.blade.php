@@ -60,6 +60,7 @@
 	        	<th width="10%">PO/CAT</th>
 	        	<th width="10%">Item code</th>
 	        	<th width="15%">Description</th>
+	        	<th width="10%">Color</th>
 	        	<th width="10%">Size</th>
 	        	<th width="10%">TOTAL PCS/MTR</th>
 	        	<th width="10%">Initial Incrise(%)</th>
@@ -84,6 +85,7 @@
 					$rowspanValue += $count;
 				?>
     	 	@endforeach
+
     		@foreach ($sentBillId as $key => $item)
 				<?php
 					$i = 0;
@@ -92,6 +94,7 @@
 					$totalQty = 0;
 					$totalIncrQty = 0;
 					$itemsize = explode(',', $item->item_size);
+					$itemcolor = explode(',', $item->gmts_color);
 					$qty = explode(',', $item->left_mrf_ipo_quantity);
 					$itemlength = 0;
 
@@ -106,70 +109,96 @@
     				<td rowspan="{{$itemlength}}">{{$item->poCatNo}}</td>
     				<td rowspan="{{$itemlength}}">{{$item->item_code}}</td>
     				<td rowspan="{{$itemlength}}">{{$item->erp_code}}</td>
-		    			@if ($itemlength >= 1 )
-			    			<td colspan="2" class="colspan-td">
-			    				<table >
-			    					@foreach ($itemQtyValue as $size => $Qty)
-			    					<?php
-										$i++;
-										$totalQty += $Qty;
-									?>
-			    					<tr>
-			    						<td width="50%">{{$size}}</td>
-			    						<input type="hidden" name="product_qty[]" value="{{$Qty}}">
-						    			<td width="50%">{{$Qty}}</td>
-			    					</tr>
-			    					@endforeach
 
-			    					@if( $i > 1 )
-			    					<tr>
-			    						<td></td>
-			    						<td width="100%">{{$totalQty}}</td>
-			    					</tr>
-			    					@endif
-			    				</table>
-			    			</td>
-			    			<td class="colspan-td">
-			    			<div class="middel-table">
-			    				<table>
-			    					@foreach ($itemQtyValue as $size => $Qty)
-										<?php
-											$k++;
-											$totalIncrQty += ceil(($Qty * $increase) / 100 + $Qty);
-										?>
+					<td colspan="4" style="padding: 0px;">
+							<table >
+								<tbody>
+								@foreach($qty as $key => $quantity)
+									<tr>
+										<td style="width: 25%; border-bottom: 1px solid #DBDBDB; border-right: 1px solid #DBDBDB; text-align: center;">{{$itemcolor[$key]}}</td>
+										<td style="width: 25%; border-bottom: 1px solid #DBDBDB; border-right: 1px solid #DBDBDB; text-align: center;">{{$itemsize[$key]}}</td>
 
-										<tr>
-											<!-- <input type="hidden" name="taskType" value="IPO"> -->
-											<!-- <input type="hidden" name="ipo_increase" value="YES"> -->
-											<input type="hidden" name="ipo_id[]" value="{{$item->id}}" >
-											<td width="100%">
+										<td style="width: 25%; border-bottom: 1px solid #DBDBDB; border-right: 1px solid #DBDBDB; text-align: center;">
+											<input type="hidden" name="product_qty[]" value="{{$quantity}}">
+											{{$quantity}}
+										</td>
+										<input type="hidden" name="ipo_id[]" value="{{$item->id}}" >
+										<td style="width: 25%; border-bottom: 1px solid #DBDBDB; border-right: 1px solid #DBDBDB; text-align: center;">
 
-												<input type="text" name="ipo_increase_percentage[]" value="{{$increase}}" placeholder="Percentage" class="form-control">
+											<input type="text" name="ipo_increase_percentage[]" value="{{$increase}}" placeholder="Percentage" class="form-control">
 
-											</td>
+										</td>
+									</tr>
+								@endforeach
+								</tbody>
+							</table>
+					</td>
+		    			{{--@if ($itemlength >= 1 )--}}
+			    			{{--<td colspan="2" class="colspan-td">--}}
+			    				{{--<table >--}}
+			    					{{--@foreach ($itemQtyValue as $size => $Qty)--}}
+			    					{{--<?php--}}
+										{{--$i++;--}}
+										{{--$totalQty += $Qty;--}}
+									{{--?>--}}
+			    					{{--<tr>--}}
+			    						{{--<td width="50%">{{$size}}</td>--}}
+			    						{{--<input type="hidden" name="product_qty[]" value="{{$Qty}}">--}}
+						    			{{--<td width="50%">{{$Qty}}</td>--}}
+			    					{{--</tr>--}}
+			    					{{--@endforeach--}}
 
-										</tr>
-			    					@endforeach
-									<?php $ipoIdInc = $ipoIdInc + 1;?>
+			    					{{--@if( $i > 1 )--}}
+			    					{{--<tr>--}}
+			    						{{--<td></td>--}}
+			    						{{--<td width="100%">{{$totalQty}}</td>--}}
+			    					{{--</tr>--}}
+			    					{{--@endif--}}
+			    				{{--</table>--}}
+			    			{{--</td>--}}
+			    			{{--<td class="colspan-td">--}}
+			    			{{--<div class="middel-table">--}}
+			    				{{--<table>--}}
+			    					{{--@foreach ($itemQtyValue as $size => $Qty)--}}
+										{{--<?php--}}
+											{{--$k++;--}}
+											{{--$totalIncrQty += ceil(($Qty * $increase) / 100 + $Qty);--}}
+										{{--?>--}}
 
-			    					@if( $k > 1 )
-			    					<tr>
+										{{--<tr>--}}
+											{{--<!-- <input type="hidden" name="taskType" value="IPO"> -->--}}
+											{{--<!-- <input type="hidden" name="ipo_increase" value="YES"> -->--}}
+											{{--<input type="hidden" name="ipo_id[]" value="{{$item->id}}" >--}}
+											{{--<td width="100%">--}}
+
+												{{--<input type="text" name="ipo_increase_percentage[]" value="{{$increase}}" placeholder="Percentage" class="form-control">--}}
+
+											{{--</td>--}}
+
+										{{--</tr>--}}
+			    					{{--@endforeach--}}
+									{{--<?php $ipoIdInc = $ipoIdInc + 1;?>--}}
+
+			    					{{--@if( $k > 1 )--}}
+			    					{{--<tr>--}}
 										{{--<td width="100%">{{$totalIncrQty}}</td>--}}
-			    					</tr>
-			    					@endif
-			    				</table>
-			    				</div>
-			    			</td>
-			    		@endif
-			    		<?php
-							$totalAllQty += $totalQty;
-							$totalAllIncrQty += $totalIncrQty;
-						?>
-					<td></td>
+			    					{{--</tr>--}}
+			    					{{--@endif--}}
+			    				{{--</table>--}}
+			    				{{--</div>--}}
+			    			{{--</td>--}}
+			    		{{--@endif--}}
+
+
+<!--			    		--><?php
+//							$totalAllQty += $totalQty;
+//							$totalAllIncrQty += $totalIncrQty;
+//						?>
+					<td> First Deliver</td>
 					<td style="padding-top: 20px;">
 						{{Carbon\Carbon::parse($billdata->created_at)->format('d-m-Y')}}
 					</td>
-					<td></td>
+					<td> Confirmation date </td>
     			</tr>
 	    	@endforeach
 		</tbody>
